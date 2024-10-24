@@ -50,7 +50,7 @@ const ProductList = () => {
                     </a>
                     <div className="align-inline spacing-1 filtration-cell-width-1">
                         <select className="SlectBox small">
-                            <option disabled="disabled" selected="selected">Most popular products</option>
+                            <option disabled="disabled"  >Most popular products</option>
                             <option value="volvo">Volvo</option>
                             <option value="saab">Saab</option>
                             <option value="mercedes">Mercedes</option>
@@ -59,7 +59,7 @@ const ProductList = () => {
                     </div>
                     <div className="align-inline spacing-1 filtration-cell-width-2">
                         <select className="SlectBox small">
-                            <option disabled="disabled" selected="selected">Show 30</option>
+                            <option disabled="disabled"  >Show 30</option>
                             <option value="volvo">30</option>
                             <option value="saab">50</option>
                             <option value="mercedes">100</option>

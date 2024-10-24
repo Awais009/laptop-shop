@@ -40,6 +40,7 @@ import { Link } from "react-router-dom";
                                             <a className="cart-entry-thumbnail" href="#"><img src="assets/img/product-1.png" alt="" /></a>
                                             <div className="cart-entry-description">
                                                 <table>
+                                                    <tbody>
                                                     <tr>
                                                         <td>
                                                             <div className="h6"><a href="#">modern beat ht</a></div>
@@ -56,6 +57,8 @@ import { Link } from "react-router-dom";
                                                             <div className="button-close"></div>
                                                         </td>
                                                     </tr>
+                                                    </tbody>
+                                                    
                                                 </table>
                                             </div>
                                         </div>
@@ -63,6 +66,7 @@ import { Link } from "react-router-dom";
                                             <a className="cart-entry-thumbnail" href="#"><img src="assets/img/product-2.png" alt="" /></a>
                                             <div className="cart-entry-description">
                                                 <table>
+                                                    <tbody>
                                                     <tr>
                                                         <td>
                                                             <div className="h6"><a href="#">modern beat ht</a></div>
@@ -79,6 +83,8 @@ import { Link } from "react-router-dom";
                                                             <div className="button-close"></div>
                                                         </td>
                                                     </tr>
+                                                    </tbody>
+                                                   
                                                 </table>
                                             </div>
                                         </div>
@@ -86,6 +92,7 @@ import { Link } from "react-router-dom";
                                             <a className="cart-entry-thumbnail" href="#"><img src="assets/img/product-3.png" alt="" /></a>
                                             <div className="cart-entry-description">
                                                 <table>
+                                                    <tbody>
                                                     <tr>
                                                         <td>
                                                             <div className="h6"><a href="#">modern beat ht</a></div>
@@ -102,6 +109,8 @@ import { Link } from "react-router-dom";
                                                             <div className="button-close"></div>
                                                         </td>
                                                     </tr>
+                                                    </tbody>
+                                                  
                                                 </table>
                                             </div>
                                         </div>

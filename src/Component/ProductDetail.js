@@ -135,7 +135,7 @@ const ProductDetail = () => {
                                 </div>
                                 <div className="col-sm-9">
                                     <select className="SlectBox">
-                                        <option disabled="disabled" selected="selected">Choose size</option>
+                                        <option disabled="disabled"  >Choose size</option>
                                         <option value="volvo">Volvo</option>
                                         <option value="saab">Saab</option>
                                         <option value="mercedes">Mercedes</option>

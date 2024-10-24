@@ -349,7 +349,7 @@ const Home = () => {
                 <div className="tab-entry visible">
                   <div className="row nopadding">
                     {AllProducts.map((item, i) => (
-                      <div className="col-sm-3">
+                      <div className="col-sm-3" key={i} >
                         <div className="product-shortcode style-1">
                           <div className="title">
                             <div className="simple-article size-1 color col-xs-b5">
@@ -511,7 +511,7 @@ const Home = () => {
                                   <span className="text">Learn More</span>
                                 </span>
                               </Link>
-                              <a className="button size-2 style-3" href="#">
+                              <a className="button size-2 style-3" href="javascript:">
                                 <span className="button-wrapper">
                                   <span className="icon">
                                     <img src="assets/img/icon-3.png" alt="" />

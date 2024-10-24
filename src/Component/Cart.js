@@ -130,7 +130,7 @@ const Cart = () => {
                 <div className="col-md-6 col-xs-b50 col-md-b0">
                     <h4 className="h4 col-xs-b25">calculate shipping</h4>
                     <select className="SlectBox">
-                        <option disabled="disabled" selected="selected">Choose country for shipping</option>
+                        <option disabled="disabled" >Choose country for shipping</option>
                         <option value="volvo">Volvo</option>
                         <option value="saab">Saab</option>
                         <option value="mercedes">Mercedes</option>

@@ -26,7 +26,7 @@ const Checkout = () => {
                 <div className="col-md-6 col-xs-b50 col-md-b0">
                     <h4 className="h4 col-xs-b25">billing details</h4>
                     <select className="SlectBox">
-                        <option disabled="disabled" selected="selected">Choose country</option>
+                        <option disabled="disabled" >Choose country</option>
                         <option value="volvo">Volvo</option>
                         <option value="saab">Saab</option>
                         <option value="mercedes">Mercedes</option>
@@ -87,7 +87,7 @@ const Checkout = () => {
                     <div className="checkbox-toggle-wrapper">
                         <div className="empty-space col-xs-b25"></div>
                         <select className="SlectBox">
-                            <option disabled="disabled" selected="selected">Choose country</option>
+                            <option disabled="disabled" >Choose country</option>
                             <option value="volvo">Volvo</option>
                             <option value="saab">Saab</option>
                             <option value="mercedes">Mercedes</option>
@@ -233,7 +233,7 @@ const Checkout = () => {
                     <div className="empty-space col-xs-b50"></div>
                     <h4 className="h4 col-xs-b25">payment method</h4>
                     <select className="SlectBox">
-                        <option selected="selected">PayPal</option>
+                        <option >PayPal</option>
                         <option value="volvo">Volvo</option>
                         <option value="saab">Saab</option>
                         <option value="mercedes">Mercedes</option>

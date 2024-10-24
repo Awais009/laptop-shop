@@ -119,12 +119,13 @@ const Footer = () => {
         <div className="popup-content" data-rel="1">
             <div className="layer-close"></div>
             <div className="popup-container size-1">
+                <form>
                 <div className="popup-align">
                     <h3 className="h3 text-center">Log in</h3>
                     <div className="empty-space col-xs-b30"></div>
                     <input className="simple-input" type="text" value="" placeholder="Your email" />
                     <div className="empty-space col-xs-b10 col-sm-b20"></div>
-                    <input className="simple-input" type="password" value="" placeholder="Enter password" />
+                    <input className="simple-input" type="password" autoComplete=''  placeholder="Enter password" />
                     <div className="empty-space col-xs-b10 col-sm-b20"></div>
                     <div className="row">
                         <div className="col-sm-6 col-xs-b10 col-sm-b0">
@@ -172,6 +173,7 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
+                </form>
                 <div className="button-close"></div>
             </div>
         </div>
@@ -179,6 +181,7 @@ const Footer = () => {
         <div className="popup-content" data-rel="2">
             <div className="layer-close"></div>
             <div className="popup-container size-1">
+                <form>
                 <div className="popup-align">
                     <h3 className="h3 text-center">register</h3>
                     <div className="empty-space col-xs-b30"></div>
@@ -186,9 +189,9 @@ const Footer = () => {
                     <div className="empty-space col-xs-b10 col-sm-b20"></div>
                     <input className="simple-input" type="text" value="" placeholder="Your email" />
                     <div className="empty-space col-xs-b10 col-sm-b20"></div>
-                    <input className="simple-input" type="password" value="" placeholder="Enter password" />
+                    <input className="simple-input" type="password" autoComplete='' placeholder="Enter password" />
                     <div className="empty-space col-xs-b10 col-sm-b20"></div>
-                    <input className="simple-input" type="password" value="" placeholder="Repeat password" />
+                    <input className="simple-input" type="password" autoComplete=''  placeholder="Repeat password" />
                     <div className="empty-space col-xs-b10 col-sm-b20"></div>
                     <div className="row">
                         <div className="col-sm-7 col-xs-b10 col-sm-b0">
@@ -236,6 +239,8 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
+                </form>
+
                 <div className="button-close"></div>
             </div>
         </div>
@@ -363,7 +368,7 @@ const Footer = () => {
                                 </div>
                                 <div className="col-sm-9">
                                     <select className="SlectBox">
-                                        <option disabled="disabled" selected="selected">Choose size</option>
+                                        <option disabled="disabled" >Choose size</option>
                                         <option value="volvo">Volvo</option>
                                         <option value="saab">Saab</option>
                                         <option value="mercedes">Mercedes</option>
