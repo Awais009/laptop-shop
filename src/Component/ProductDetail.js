@@ -1,14 +1,39 @@
 // import React from "react";
 import React, { useEffect , useRef , useState  } from 'react';
 import { Link } from "react-router-dom";
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+
 const ProductDetail = () => {
+    const { SKU } = useParams(); // Get the ID from the URL
+    const [product, setProduct] = useState({});
+    const [images, setImages] = useState([]);
+    const [storagePath, setStoragePath] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL; // Or use a config file
+
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axios.get(`http://localhost/laptop-backend/api/product-detail/${SKU}`);
+            setProduct(response.data.data);
+            setImages(response.data.data.images);
+            setStoragePath(response.data.storagePath);
+            console.log(response.data);
+            
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
+        };
+      
+        fetchData();
+      }, []);
     
     return (
         <>
         <div className="container">
             <div className="empty-space col-xs-b15 col-sm-b30"></div>
             <div className="breadcrumbs">
-                <a href="#">home</a>
+                <a href="#">home </a>
                 <a href="#">accessories</a>
                 <a href="#">gadgets</a>
                 <a href="#">sport gadgets</a>
@@ -24,34 +49,14 @@ const ProductDetail = () => {
                                    <div className="swiper-button-prev hidden"></div>
                                    <div className="swiper-button-next hidden"></div>
                                    <div className="swiper-wrapper">
+
+                                 {  images ? images.map((image,i)=>(
                                        <div className="swiper-slide">
-                                            <div className="swiper-lazy-preloader"></div>
-                                            <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-preview-4.jpg"></div>
+                                            <div className="product-big-preview-entry swiper-lazy" data-background={`${storagePath}/${image.path}`}></div>
                                        </div>
-                                       <div className="swiper-slide">
-                                            <div className="swiper-lazy-preloader"></div>
-                                            <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-preview-5.jpg"></div>
-                                       </div>
-                                       <div className="swiper-slide">
-                                            <div className="swiper-lazy-preloader"></div>
-                                            <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-preview-6.jpg"></div>
-                                       </div>
-                                       <div className="swiper-slide">
-                                            <div className="swiper-lazy-preloader"></div>
-                                            <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-preview-7.jpg"></div>
-                                       </div>
-                                       <div className="swiper-slide">
-                                            <div className="swiper-lazy-preloader"></div>
-                                            <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-preview-8.jpg"></div>
-                                       </div>
-                                       <div className="swiper-slide">
-                                            <div className="swiper-lazy-preloader"></div>
-                                            <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-preview-9.jpg"></div>
-                                       </div>
-                                       <div className="swiper-slide">
-                                            <div className="swiper-lazy-preloader"></div>
-                                            <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-preview-10.jpg"></div>
-                                       </div>
+                                    )) : '' }
+                                      
+
                                    </div>
                                 </div>
 
@@ -61,41 +66,15 @@ const ProductDetail = () => {
                                    <div className="swiper-button-prev hidden"></div>
                                    <div className="swiper-button-next hidden"></div>
                                    <div className="swiper-wrapper">
-                                       <div className="swiper-slide">
-                                            <div className="product-small-preview-entry">
-                                                <img src="assets/img/product-preview-4_.jpg" alt="" />
-                                            </div>
-                                        </div>
-                                        <div className="swiper-slide">
-                                            <div className="product-small-preview-entry">
-                                                <img src="assets/img/product-preview-5_.jpg" alt="" />
-                                            </div>
-                                        </div>
-                                        <div className="swiper-slide">
-                                            <div className="product-small-preview-entry">
-                                                <img src="assets/img/product-preview-6_.jpg" alt="" />
-                                            </div>
-                                        </div>
-                                        <div className="swiper-slide">
-                                            <div className="product-small-preview-entry">
-                                                <img src="assets/img/product-preview-7_.jpg" alt="" />
-                                            </div>
-                                        </div>
-                                        <div className="swiper-slide">
-                                            <div className="product-small-preview-entry">
-                                                <img src="assets/img/product-preview-8_.jpg" alt="" />
-                                            </div>
-                                        </div>
-                                        <div className="swiper-slide">
-                                            <div className="product-small-preview-entry">
-                                                <img src="assets/img/product-preview-9_.jpg" alt="" />
-                                            </div>
-                                        </div>
-                                        <div className="swiper-slide">
-                                            <div className="product-small-preview-entry">
-                                                <img src="assets/img/product-preview-10_.jpg" alt="" />
-                                            </div>
-                                       </div>
+
+                                                <div className="swiper-slide" >
+                                                <div className="product-small-preview-entry">
+                                                    <img src='assets/img/background-24.jpg' alt="" />
+                                                </div>
+                                              </div>
+ 
+                                     
+                                        
 
                                    </div>
                                 </div>
@@ -104,10 +83,11 @@ const ProductDetail = () => {
                         </div>
                         <div className="col-sm-6">
                             <div className="simple-article size-3 grey col-xs-b5">SMART WATCHES</div>
-                            <div className="h3 col-xs-b25">watch 42mm smartwatch</div>
+                            <div className="h3 col-xs-b25">{product?.title}
+                            </div>
                             <div className="row col-xs-b25">
                                 <div className="col-sm-6">
-                                    <div className="simple-article size-5 grey">PRICE: <span className="color">$225.00</span></div>        
+                                    <div className="simple-article size-5 grey">PRICE: <span className="color">${product?.price}</span></div>        
                                 </div>
                                 <div className="col-sm-6 col-sm-text-right">
                                     <div className="rate-wrapper align-inline">
@@ -122,13 +102,13 @@ const ProductDetail = () => {
                             </div>
                             <div className="row">
                                 <div className="col-sm-6">
-                                    <div className="simple-article size-3 col-xs-b5">ITEM NO.: <span className="grey">127-#5238</span></div>
+                                    <div className="simple-article size-3 col-xs-b5">ITEM NO.: <span className="grey">{product?.SKU}</span></div>
                                 </div>
                                 <div className="col-sm-6 col-sm-text-right">
                                     <div className="simple-article size-3 col-xs-b20">AVAILABLE.: <span className="grey">YES</span></div>
                                 </div>
                             </div>
-                            <div className="simple-article size-3 col-xs-b30">Vivamus in tempor eros. Phasellus rhoncus in nunc sit amet mattis. Integer in ipsum vestibulum, molestie arcu ac, efficitur tellus. Phasellus id vulputate erat.</div>
+                            <div className="simple-article size-3 col-xs-b30">{product?.description}</div>
                             <div className="row col-xs-b40">
                                 <div className="col-sm-3">
                                     <div className="h6 detail-data-title size-1">size:</div>
@@ -214,8 +194,7 @@ const ProductDetail = () => {
                             <div className="tabulation-title simple-input">description</div>
                             <ul className="tabulation-toggle">
                                 <li><a className="tab-menu active">description</a></li>
-                                <li><a className="tab-menu">technical specs</a></li>
-                                <li><a className="tab-menu">testimonials</a></li>
+                               
                             </ul>
                         </div>
                         <div className="empty-space col-xs-b30 col-sm-b60"></div>
@@ -275,281 +254,6 @@ const ProductDetail = () => {
                                     <div className="simple-article size-2">Nullam et massa nulla. Quisque nec magna ornare tellus consequat lacinia a quis sem. Vivamus ut posuere nunc. Praesent porttitor vitae augue in semper. Vestibulum non leo et nisi facilisis consequat. Ut volutpat augue faucibus, fermentum turpis convallis, lobortis augue.</div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div className="tab-entry">
-                            <div className="h5">watch 38mm</div>
-                            <div className="empty-space col-xs-b15"></div>
-                            <div className="row">
-                                <div className="col-sm-6">
-                                    <div className="product-description-entry row nopadding">
-                                        <div className="col-xs-6">
-                                            <div className="h6">height:</div>
-                                        </div>
-                                        <div className="col-xs-6 text-right">
-                                            <div className="simple-article size-2">38.6mm</div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-6">
-                                    <div className="product-description-entry row nopadding">
-                                        <div className="col-xs-6">
-                                            <div className="h6">width:</div>
-                                        </div>
-                                        <div className="col-xs-6 text-right">
-                                            <div className="simple-article size-2">33.3mm</div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-6">
-                                    <div className="product-description-entry row nopadding">
-                                        <div className="col-xs-6">
-                                            <div className="h6">depth:</div>
-                                        </div>
-                                        <div className="col-xs-6 text-right">
-                                            <div className="simple-article size-2">10.5mm</div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-6">
-                                    <div className="product-description-entry row nopadding">
-                                        <div className="col-xs-6">
-                                            <div className="h6">case:</div>
-                                        </div>
-                                        <div className="col-xs-6 text-right">
-                                            <div className="simple-article size-2">40g</div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-6">
-                                    <div className="product-description-entry row nopadding">
-                                        <div className="col-xs-6">
-                                            <div className="h6">material:</div>
-                                        </div>
-                                        <div className="col-xs-6 text-right">
-                                            <div className="simple-article size-2">Stainless Steel</div>
-                                        </div>
-                                    </div>  
-                                </div>
-                            </div>
-                            <div className="empty-space col-xs-b30 col-sm-b60"></div>
-                            <div className="row">
-                                <div className="col-sm-6">
-                                    <div className="simple-article size-2 text-center">
-                                        <img src="assets/img/thumbnail-19.jpg" alt="" />
-                                        <p><br/>Stainless Steel</p>
-                                    </div>
-                                </div>
-                                <div className="col-sm-6">
-                                    <div className="simple-article size-2 text-center">
-                                        <img src="assets/img/thumbnail-20.jpg" alt="" />
-                                        <p><br/>Space Black Stainless Steel</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="empty-space col-xs-b30 col-sm-b60"></div>
-                            <div className="h5">watch 42mm</div>
-                            <div className="empty-space col-xs-b15"></div>
-                            <div className="row">
-                                <div className="col-sm-6">
-                                    <div className="product-description-entry row nopadding">
-                                        <div className="col-xs-6">
-                                            <div className="h6">height:</div>
-                                        </div>
-                                        <div className="col-xs-6 text-right">
-                                            <div className="simple-article size-2">42.0mm</div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-6">
-                                    <div className="product-description-entry row nopadding">
-                                        <div className="col-xs-6">
-                                            <div className="h6">width:</div>
-                                        </div>
-                                        <div className="col-xs-6 text-right">
-                                            <div className="simple-article size-2">35.9mm</div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-6">
-                                    <div className="product-description-entry row nopadding">
-                                        <div className="col-xs-6">
-                                            <div className="h6">depth:</div>
-                                        </div>
-                                        <div className="col-xs-6 text-right">
-                                            <div className="simple-article size-2">10.5mm</div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-6">
-                                    <div className="product-description-entry row nopadding">
-                                        <div className="col-xs-6">
-                                            <div className="h6">case:</div>
-                                        </div>
-                                        <div className="col-xs-6 text-right">
-                                            <div className="simple-article size-2">50g</div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-6">
-                                    <div className="product-description-entry row nopadding">
-                                        <div className="col-xs-6">
-                                            <div className="h6">material:</div>
-                                        </div>
-                                        <div className="col-xs-6 text-right">
-                                            <div className="simple-article size-2">Space Black Stainless Steel</div>
-                                        </div>
-                                    </div>  
-                                </div>
-                            </div>
-                            <div className="empty-space col-xs-b30 col-sm-b60"></div>
-                            <div className="row">
-                                <div className="col-sm-6">
-                                    <div className="simple-article size-2 text-center">
-                                        <img src="assets/img/thumbnail-21.jpg" alt="" />
-                                        <p><br/>Stainless Steel</p>
-                                    </div>
-                                </div>
-                                <div className="col-sm-6">
-                                    <div className="simple-article size-2 text-center">
-                                        <img src="assets/img/thumbnail-22.jpg" alt="" />
-                                        <p><br/>Space Black Stainless Steel</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="tab-entry">
-                            <div className="testimonial-entry">
-                                <div className="row col-xs-b20">
-                                    <div className="col-xs-8">
-                                        <img className="preview" src="assets/img/testimonial-1.jpg" alt="" />
-                                        <div className="heading-description">
-                                            <div className="h6 col-xs-b5">Dorian gray</div>
-                                            <div className="rate-wrapper align-inline">
-                                                <i className="fa fa-star" aria-hidden="true"></i>
-                                                <i className="fa fa-star" aria-hidden="true"></i>
-                                                <i className="fa fa-star" aria-hidden="true"></i>
-                                                <i className="fa fa-star" aria-hidden="true"></i>
-                                                <i className="fa fa-star-o" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xs-4 text-right">
-                                        <div className="simple-article size-1 grey">20:45 APR 07 / 15</div>
-                                    </div>
-                                </div>
-                                <div className="simple-article size-2 col-xs-b15">Sed sodales sed orci molestie tristique. Nunc dictum, erat id molestie vestibulum, ex leo vestibulum justo, luctus tempor erat sem quis diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur vulputate elit. </div>
-                                <div className="pros">
-                                    <div className="simple-article size-2 col-xs-b15">Runc dictum, erat id molestie vestibulum, ex leo vestibulum justo, luctus tempor erat sem quis</div>
-                                </div>
-                                <div className="cons">
-                                    <div className="simple-article size-2 col-xs-b25">Do not have</div>
-                                </div>
-                            </div>
-                            <div className="testimonial-entry">
-                                <div className="row col-xs-b20">
-                                    <div className="col-xs-8">
-                                        <img className="preview" src="assets/img/testimonial-2.jpg" alt="" />
-                                        <div className="heading-description">
-                                            <div className="h6 col-xs-b5">alan doe</div>
-                                            <div className="rate-wrapper align-inline">
-                                                <i className="fa fa-star" aria-hidden="true"></i>
-                                                <i className="fa fa-star" aria-hidden="true"></i>
-                                                <i className="fa fa-star" aria-hidden="true"></i>
-                                                <i className="fa fa-star" aria-hidden="true"></i>
-                                                <i className="fa fa-star-o" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xs-4 text-right">
-                                        <div className="simple-article size-1 grey">20:45 APR 07 / 15</div>
-                                    </div>
-                                </div>
-                                <div className="simple-article size-2 col-xs-b15">Sed sodales sed orci molestie tristique. Nunc dictum, erat id molestie vestibulum, ex leo vestibulum justo, luctus tempor erat sem quis diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur vulputate elit. </div>
-                                <div className="pros">
-                                    <div className="simple-article size-2 col-xs-b15">Runc dictum, erat id molestie vestibulum, ex leo vestibulum justo, luctus tempor erat sem quis</div>
-                                </div>
-                                <div className="cons">
-                                    <div className="simple-article size-2 col-xs-b25">Do not have</div>
-                                </div>
-                            </div>
-                            <div className="testimonial-entry">
-                                <div className="row col-xs-b20">
-                                    <div className="col-xs-8">
-                                        <img className="preview" src="assets/img/testimonial-3.jpg" alt="" />
-                                        <div className="heading-description">
-                                            <div className="h6 col-xs-b5">samantha rae</div>
-                                            <div className="rate-wrapper align-inline">
-                                                <i className="fa fa-star" aria-hidden="true"></i>
-                                                <i className="fa fa-star" aria-hidden="true"></i>
-                                                <i className="fa fa-star" aria-hidden="true"></i>
-                                                <i className="fa fa-star" aria-hidden="true"></i>
-                                                <i className="fa fa-star-o" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xs-4 text-right">
-                                        <div className="simple-article size-1 grey">20:45 APR 07 / 15</div>
-                                    </div>
-                                </div>
-                                <div className="simple-article size-2 col-xs-b15">Sed sodales sed orci molestie tristique. Nunc dictum, erat id molestie vestibulum, ex leo vestibulum justo, luctus tempor erat sem quis diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur vulputate elit. </div>
-                                <div className="pros">
-                                    <div className="simple-article size-2 col-xs-b15">Runc dictum, erat id molestie vestibulum, ex leo vestibulum justo, luctus tempor erat sem quis</div>
-                                </div>
-                                <div className="cons">
-                                    <div className="simple-article size-2 col-xs-b25">Do not have</div>
-                                </div>
-                            </div>
-                            <form>
-                                <div className="row m10">
-                                    <div className="col-sm-6">
-                                        <input className="simple-input" type="text" value="" placeholder="Your name" />
-                                        <div className="empty-space col-xs-b20"></div>
-                                    </div>
-                                    <div className="col-sm-6">
-                                        <input className="simple-input" type="text" value="" placeholder="Your name" />
-                                        <div className="empty-space col-xs-b20"></div>
-                                    </div>
-                                    <div className="col-sm-12">
-                                        <input className="simple-input" type="text" value="" placeholder="Describe the pros" />
-                                        <div className="empty-space col-xs-b20"></div>
-                                    </div>
-                                    <div className="col-sm-12">
-                                        <input className="simple-input" type="text" value="" placeholder="Describe cons" />
-                                        <div className="empty-space col-xs-b20"></div>
-                                    </div>
-                                    <div className="col-sm-12">
-                                        <textarea className="simple-input" placeholder="Your comment"></textarea>
-                                        <div className="empty-space col-xs-b20"></div>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-xs-6">
-                                        <div className="align-inline">
-                                            <div className="empty-space col-xs-b5"></div>
-                                            <div className="simple-article size-3">Rating&nbsp;&nbsp;&nbsp;</div>
-                                            <div className="empty-space col-xs-b5"></div>
-                                        </div>
-                                        <div className="rate-wrapper set align-inline">
-                                            <i className="fa fa-star-o" aria-hidden="true"></i>
-                                            <i className="fa fa-star-o" aria-hidden="true"></i>
-                                            <i className="fa fa-star-o" aria-hidden="true"></i>
-                                            <i className="fa fa-star-o" aria-hidden="true"></i>
-                                            <i className="fa fa-star-o" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-                                    <div className="col-xs-6 text-right">
-                                        <div className="button size-2 style-3">
-                                            <span className="button-wrapper">
-                                                <span className="icon"><img src="assets/img/icon-4.png" alt="" /></span>
-                                                <span className="text">submit</span>
-                                            </span>
-                                            <input type="submit" value="" /> 
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
                     </div>
 

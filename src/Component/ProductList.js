@@ -2,7 +2,29 @@
 import React, { useEffect , useState  } from 'react';
 import { Link } from "react-router-dom";
 import Slider from 'react-slider';
+import axios from 'axios';
+
 const ProductList = () => {
+
+    const [products, setProducts] = useState([]);
+    const [storagePath, setStoragePath] = useState('');
+  const apiUrl = process.env.REACT_APP_API_URL; // Or use a config file
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost/laptop-backend/api/products`);
+        setProducts(response.data.data);
+        setStoragePath(response.data.storagePath);
+        console.log(response.data.data);
+        
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
     
     const initialMinPrice = 40;
     const initialMaxPrice = 900;
@@ -73,353 +95,55 @@ const ProductList = () => {
                     <div className={`products-content ${activeView === 'inline' ? 'view-inline' : ''}`}>
                         <div className="products-wrapper">
                             <div className="row nopadding">
-                                <div className="col-sm-4">
-                                    <div className="product-shortcode style-1">
-                                        <div className="title">
-                                            <div className="simple-article size-1 color col-xs-b5"><a href="#">SMART PHONES</a></div>
-                                            <div className="h6 animate-to-green"><a href="#">Smartphone vibe x2</a></div>
-                                        </div>
-                                        <div className="preview">
-                                            <img src="assets/img/product-40.jpg" alt="" />
-                                            <div className="preview-buttons valign-middle">
-                                                <div className="valign-middle-content">
-                                                    <Link className="button size-2 style-2" to="/product">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                            <span className="text">Learn More</span>
-                                                        </span>
-                                                    </Link>
-                                                    <a className="button size-2 style-3" href="#">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                            <span className="text">Add To Cart</span>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="price">
-                                            <div className="color-selection">
-                                                <div className="entry active" style={{ color: "#a7f050" }}></div>
-                                                <div className="entry" style={{ color: "#50e3f0" }}></div>
-                                                <div className="entry" style={{ color: "#eee" }}></div>
-                                            </div>
-                                            <div className="simple-article size-4"><span className="color">$630.00</span>&nbsp;&nbsp;&nbsp;<span className="line-through">$350.00</span></div>
-                                        </div>
-                                        <div className="description">
-                                            <div className="simple-article text size-2">Mollis nec consequat at In feugiat mole stie tortor a malesuada</div>
-                                            <div className="icons">
-                                                <a className="entry"><i className="fa fa-check" aria-hidden="true"></i></a>
-                                                <a className="entry open-popup" data-rel="3"><i className="fa fa-eye" aria-hidden="true"></i></a>
-                                                <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-4">
-                                    <div className="product-shortcode style-1">
-                                        <div className="title">
-                                            <div className="simple-article size-1 color col-xs-b5"><a href="#">SMART PHONES</a></div>
-                                            <div className="h6 animate-to-green"><a href="#">Smartphone vibe x2</a></div>
-                                        </div>
-                                        <div className="preview">
-                                            <img src="assets/img/product-41.jpg" alt="" />
-                                            <div className="preview-buttons valign-middle">
-                                                <div className="valign-middle-content">
-                                                    <Link className="button size-2 style-2" to="/product">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                            <span className="text">Learn More</span>
-                                                        </span>
-                                                    </Link>
-                                                    <a className="button size-2 style-3" href="#">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                            <span className="text">Add To Cart</span>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="price">
-                                            <div className="simple-article size-4 dark">$630.00</div>
-                                        </div>
-                                        <div className="description">
-                                            <div className="simple-article text size-2">Mollis nec consequat at In feugiat mole stie tortor a malesuada</div>
-                                            <div className="icons">
-                                                <a className="entry"><i className="fa fa-check" aria-hidden="true"></i></a>
-                                                <a className="entry open-popup" data-rel="3"><i className="fa fa-eye" aria-hidden="true"></i></a>
-                                                <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-4">
-                                    <div className="product-shortcode style-1">
-                                        <div className="title">
-                                            <div className="simple-article size-1 color col-xs-b5"><a href="#">SMART PHONES</a></div>
-                                            <div className="h6 animate-to-green"><a href="#">Smartphone vibe x2</a></div>
-                                        </div>
-                                        <div className="preview">
-                                            <img src="assets/img/product-42.jpg" alt="" />
-                                            <div className="preview-buttons valign-middle">
-                                                <div className="valign-middle-content">
-                                                    <Link className="button size-2 style-2" to="/product">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                            <span className="text">Learn More</span>
-                                                        </span>
-                                                    </Link>
-                                                    <a className="button size-2 style-3" href="#">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                            <span className="text">Add To Cart</span>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="price">
-                                            <div className="simple-article size-4 dark">$630.00</div>
-                                        </div>
-                                        <div className="description">
-                                            <div className="simple-article text size-2">Mollis nec consequat at In feugiat mole stie tortor a malesuada</div>
-                                            <div className="icons">
-                                                <a className="entry"><i className="fa fa-check" aria-hidden="true"></i></a>
-                                                <a className="entry open-popup" data-rel="3"><i className="fa fa-eye" aria-hidden="true"></i></a>
-                                                <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-4">
-                                    <div className="product-shortcode style-1">
-                                        <div className="title">
-                                            <div className="simple-article size-1 color col-xs-b5"><a href="#">SMART PHONES</a></div>
-                                            <div className="h6 animate-to-green"><a href="#">Smartphone vibe x2</a></div>
-                                        </div>
-                                        <div className="preview">
-                                            <img src="assets/img/product-43.jpg" alt="" />
-                                            <div className="preview-buttons valign-middle">
-                                                <div className="valign-middle-content">
-                                                    <Link className="button size-2 style-2" to="/product">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                            <span className="text">Learn More</span>
-                                                        </span>
-                                                    </Link>
-                                                    <a className="button size-2 style-3" href="#">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                            <span className="text">Add To Cart</span>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="price">
-                                            <div className="simple-article size-4 dark">$630.00</div>
-                                        </div>
-                                        <div className="description">
-                                            <div className="simple-article text size-2">Mollis nec consequat at In feugiat mole stie tortor a malesuada</div>
-                                            <div className="icons">
-                                                <a className="entry"><i className="fa fa-check" aria-hidden="true"></i></a>
-                                                <a className="entry open-popup" data-rel="3"><i className="fa fa-eye" aria-hidden="true"></i></a>
-                                                <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-4">
-                                    <div className="product-shortcode style-1">
-                                        <div className="title">
-                                            <div className="simple-article size-1 color col-xs-b5"><a href="#">SMART PHONES</a></div>
-                                            <div className="h6 animate-to-green"><a href="#">Smartphone vibe x2</a></div>
-                                        </div>
-                                        <div className="preview">
-                                            <img src="assets/img/product-44.jpg" alt="" />
-                                            <div className="preview-buttons valign-middle">
-                                                <div className="valign-middle-content">
-                                                    <Link className="button size-2 style-2" to="/product">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                            <span className="text">Learn More</span>
-                                                        </span>
-                                                    </Link>
-                                                    <a className="button size-2 style-3" href="#">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                            <span className="text">Add To Cart</span>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="price">
-                                            <div className="simple-article size-4 dark">$630.00</div>
-                                        </div>
-                                        <div className="description">
-                                            <div className="simple-article text size-2">Mollis nec consequat at In feugiat mole stie tortor a malesuada</div>
-                                            <div className="icons">
-                                                <a className="entry"><i className="fa fa-check" aria-hidden="true"></i></a>
-                                                <a className="entry open-popup" data-rel="3"><i className="fa fa-eye" aria-hidden="true"></i></a>
-                                                <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-4">
-                                    <div className="product-shortcode style-1">
-                                        <div className="title">
-                                            <div className="simple-article size-1 color col-xs-b5"><a href="#">SMART PHONES</a></div>
-                                            <div className="h6 animate-to-green"><a href="#">Smartphone vibe x2</a></div>
-                                        </div>
-                                        <div className="preview">
-                                            <img src="assets/img/product-45.jpg" alt="" />
-                                            <div className="preview-buttons valign-middle">
-                                                <div className="valign-middle-content">
-                                                    <Link className="button size-2 style-2" to="/product">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                            <span className="text">Learn More</span>
-                                                        </span>
-                                                    </Link>
-                                                    <a className="button size-2 style-3" href="#">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                            <span className="text">Add To Cart</span>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="price">
-                                            <div className="simple-article size-4 dark">$630.00</div>
-                                        </div>
-                                        <div className="description">
-                                            <div className="simple-article text size-2">Mollis nec consequat at In feugiat mole stie tortor a malesuada</div>
-                                            <div className="icons">
-                                                <a className="entry"><i className="fa fa-check" aria-hidden="true"></i></a>
-                                                <a className="entry open-popup" data-rel="3"><i className="fa fa-eye" aria-hidden="true"></i></a>
-                                                <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-4">
-                                    <div className="product-shortcode style-1">
-                                        <div className="title">
-                                            <div className="simple-article size-1 color col-xs-b5"><a href="#">SMART PHONES</a></div>
-                                            <div className="h6 animate-to-green"><a href="#">Smartphone vibe x2</a></div>
-                                        </div>
-                                        <div className="preview">
-                                            <img src="assets/img/product-46.jpg" alt="" />
-                                            <div className="preview-buttons valign-middle">
-                                                <div className="valign-middle-content">
-                                                    <Link className="button size-2 style-2" to="/product">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                            <span className="text">Learn More</span>
-                                                        </span>
-                                                    </Link>
-                                                    <a className="button size-2 style-3" href="#">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                            <span className="text">Add To Cart</span>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="price">
-                                            <div className="simple-article size-4 dark">$630.00</div>
-                                        </div>
-                                        <div className="description">
-                                            <div className="simple-article text size-2">Mollis nec consequat at In feugiat mole stie tortor a malesuada</div>
-                                            <div className="icons">
-                                                <a className="entry"><i className="fa fa-check" aria-hidden="true"></i></a>
-                                                <a className="entry open-popup" data-rel="3"><i className="fa fa-eye" aria-hidden="true"></i></a>
-                                                <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-4">
-                                    <div className="product-shortcode style-1">
-                                        <div className="title">
-                                            <div className="simple-article size-1 color col-xs-b5"><a href="#">SMART PHONES</a></div>
-                                            <div className="h6 animate-to-green"><a href="#">Smartphone vibe x2</a></div>
-                                        </div>
-                                        <div className="preview">
-                                            <img src="assets/img/product-47.jpg" alt="" />
-                                            <div className="preview-buttons valign-middle">
-                                                <div className="valign-middle-content">
-                                                    <Link className="button size-2 style-2" to="/product">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                            <span className="text">Learn More</span>
-                                                        </span>
-                                                    </Link>
-                                                    <a className="button size-2 style-3" href="#">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                            <span className="text">Add To Cart</span>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="price">
-                                            <div className="simple-article size-4 dark">$630.00</div>
-                                        </div>
-                                        <div className="description">
-                                            <div className="simple-article text size-2">Mollis nec consequat at In feugiat mole stie tortor a malesuada</div>
-                                            <div className="icons">
-                                                <a className="entry"><i className="fa fa-check" aria-hidden="true"></i></a>
-                                                <a className="entry open-popup" data-rel="3"><i className="fa fa-eye" aria-hidden="true"></i></a>
-                                                <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div className="col-sm-4">
-                                    <div className="product-shortcode style-1">
-                                        <div className="title">
-                                            <div className="simple-article size-1 color col-xs-b5"><a href="#">SMART PHONES</a></div>
-                                            <div className="h6 animate-to-green"><a href="#">Smartphone vibe x2</a></div>
-                                        </div>
-                                        <div className="preview">
-                                            <img src="assets/img/product-48.jpg" alt="" />
-                                            <div className="preview-buttons valign-middle">
-                                                <div className="valign-middle-content">
-                                                    <Link className="button size-2 style-2" to="/product">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                            <span className="text">Learn More</span>
-                                                        </span>
-                                                    </Link>
-                                                    <a className="button size-2 style-3" href="#">
-                                                        <span className="button-wrapper">
-                                                            <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                            <span className="text">Add To Cart</span>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="price">
-                                            <div className="simple-article size-4 dark">$630.00</div>
-                                        </div>
-                                        <div className="description">
-                                            <div className="simple-article text size-2">Mollis nec consequat at In feugiat mole stie tortor a malesuada</div>
-                                            <div className="icons">
-                                                <a className="entry"><i className="fa fa-check" aria-hidden="true"></i></a>
-                                                <a className="entry open-popup" data-rel="3"><i className="fa fa-eye" aria-hidden="true"></i></a>
-                                                <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>
+                            { products ? products.map((product, i) => (
+ <div className="col-sm-4" key={i}>
+ <div className="product-shortcode style-1">
+     <div className="title">
+         <div className="simple-article size-1 color col-xs-b5"><a href="#">SMART PHONES</a></div>
+         <div className="h6 animate-to-green"><a href="#">{product.title}</a></div>
+     </div>
+     <div className="preview">
+         <img src={`${storagePath}/${product.image.path}` } alt="producImage" />
+         <div className="preview-buttons valign-middle">
+             <div className="valign-middle-content">
+                 <Link className="button size-2 style-2" to={`/product/${product.SKU}`}>
+                     <span className="button-wrapper">
+                         <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
+                         <span className="text">Learn More</span>
+                     </span>
+                 </Link>
+                 <a className="button size-2 style-3" href="#">
+                     <span className="button-wrapper">
+                         <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
+                         <span className="text">Add To Cart</span>
+                     </span>
+                 </a>
+             </div>
+         </div>
+     </div>
+     <div className="price">
+         <div className="color-selection">
+             <div className="entry active" style={{ color: "#a7f050" }}></div>
+             <div className="entry" style={{ color: "#50e3f0" }}></div>
+             <div className="entry" style={{ color: "#eee" }}></div>
+         </div>
+         <div className="simple-article size-4"><span className="color">${product.price}</span>&nbsp;&nbsp;&nbsp;<span className="line-through">$350.00</span></div>
+     </div>
+     <div className="description">
+         <div className="simple-article text size-2">{product.description}</div>
+         <div className="icons">
+             <a className="entry"><i className="fa fa-check" aria-hidden="true"></i></a>
+             <a className="entry open-popup" data-rel="3"><i className="fa fa-eye" aria-hidden="true"></i></a>
+             <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
+         </div>
+     </div>
+ </div>  
+</div>
+                                )) : ''
+   
+                                 }
+                            
+                              
                             </div>
                         </div>
                     </div>
