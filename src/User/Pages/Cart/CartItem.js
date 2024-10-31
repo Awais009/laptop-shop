@@ -1,7 +1,9 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { DataContext } from '../../Context';
 
 const CartItem = ({ setTotalPrice }) => {
+  const { context, setContext } = useContext(DataContext);
   const [carts, setCarts] = useState([]);
   const [storagePath, setStoragePath] = useState('');
   const apiUrl = process.env.REACT_APP_API_URL; // Or use a config file
@@ -14,8 +16,16 @@ const CartItem = ({ setTotalPrice }) => {
             Authorization: `Bearer 3|BW05sBS54RQekpRWwRaljHwymjD5gQzKnvGJYrr230b926e7`,
           },
         });
+        
+        setContext({
+          ...context,
+          cart: response.data.cart
+        });
+
+        
         setCarts(response.data.cart);
         setStoragePath(response.data.storagePath);
+        
         
         // Calculate the total price on initial load
         calculateTotalPrice(response.data.cart);
@@ -49,7 +59,15 @@ const CartItem = ({ setTotalPrice }) => {
         prevCarts.map(cart => 
           cart.id === id ? { ...cart, qty: response.data.cart.qty } : cart
         )
+       
       );
+
+      setContext(prevContext => ({
+        ...prevContext,
+        cart: prevContext.cart.map(cart => 
+            cart.id === id ? { ...cart, qty: response.data.cart.qty } : cart
+        )
+    }));
       
       // Recalculate the total price after updating cart quantity
       calculateTotalPrice(

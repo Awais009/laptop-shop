@@ -1,142 +1,19 @@
 // import React from "react";
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { DataContext } from "../Context";
 
 
 
 
-const AllProducts = [
-  {
-    id: 1,
-    title: "test 1",
-    image: "assets/img/product-7.jpg",
-    desc: "Mollis nec consequat at In feugiat mole stie tortor a malesuada",
-    price: "100",
-    discount: "10%",
-  },
-  {
-    id: 2,
-    title: "test 2",
-    image: "assets/img/product-7.jpg",
-    desc: "Mollis nec consequat at In feugiat mole stie tortor a malesuada",
-    price: "100",
-    discount: "10%",
-  },
-  {
-    id: 3,
-    title: "test 3",
-    image: "assets/img/product-7.jpg",
-    desc: "Mollis nec consequat at In feugiat mole stie tortor a malesuada",
-    price: "100",
-    discount: "10%",
-  },
-  {
-    id: 4,
-    title: "test 4",
-    image: "assets/img/product-7.jpg",
-    desc: "Mollis nec consequat at In feugiat mole stie tortor a malesuada",
-    price: "100",
-    discount: "10%",
-  },
-  {
-    id: 5,
-    title: "test 5",
-    image: "assets/img/product-7.jpg",
-    desc: "Mollis nec consequat at In feugiat mole stie tortor a malesuada",
-    price: "100",
-    discount: "10%",
-  },
-  {
-    id: 6,
-    title: "test 5",
-    image: "assets/img/product-7.jpg",
-    desc: "Mollis nec consequat at In feugiat mole stie tortor a malesuada",
-    price: "100",
-    discount: "10%",
-  },
-  {
-    id: 7,
-    title: "test 5",
-    image: "assets/img/product-7.jpg",
-    desc: "Mollis nec consequat at In feugiat mole stie tortor a malesuada",
-    price: "100",
-    discount: "10%",
-  },
-  {
-    id: 8,
-    title: "test 5",
-    image: "assets/img/product-7.jpg",
-    desc: "Mollis nec consequat at In feugiat mole stie tortor a malesuada",
-    price: "100",
-    discount: "10%",
-  },
-];
-
-const PopularCategories = [
-  {
-    id: 1,
-    cat: "SMART PHONES",
-    subCat: [
-        {
-            id: 1,
-            title: 'REDMI'
-        },
-        {
-            id: 2,
-            title: 'SAMSUNG'
-        }
-    ],
-  },
-  {
-    id: 2,
-    cat: "TV AUDIO",
-    subCat: [
-        {
-            id: 1,
-            title: 'ORIENT'
-        },
-        {
-            id: 2,
-            title: 'SAMSUNG'
-        }
-    ],
-  },
-  {
-    id: 3,
-    cat: "LAPTOP & COMPUTERS",
-    subCat: [
-        {
-            id: 1,
-            title: 'ASUS'
-        },
-        {
-            id: 2,
-            title: 'DELL'
-        }
-    ],
-  },
-  {
-    id: 4,
-    cat: "GADGETS",
-    subCat: [
-        {
-            id: 1,
-            title: 'SPINNERS'
-        },
-        {
-            id: 2,
-            title: 'SAMSUNG'
-        }
-    ],
-  },
-];
 
 const Home = () => {
 
   const [data, setData] = useState([]);
   const [navigations, setNavigations] = useState([]);
   const [storagePath, setStoragePath] = useState('');
+  const { context, setContext } = useContext(DataContext);
 
   const apiUrl = process.env.REACT_APP_API_URL; // Or use a config file
   
@@ -147,7 +24,11 @@ const Home = () => {
         setData(response.data);
         setNavigations(response.data.navigations);
         setStoragePath(response.data.storagePath);
-        console.log(response.data.navigations);
+
+        setContext({
+          ...context,
+          storagePath:response.data.storagePath
+        })
         
       } catch (error) {
         console.error("Error fetching data:", error);
