@@ -26,14 +26,14 @@ import { Link } from "react-router-dom";
                             </div> */}
                             <div className="entry hidden-xs hidden-sm"><a href="#"><i className="fa fa-heart-o" aria-hidden="true"></i></a></div>
                             <div className="entry hidden-xs hidden-sm cart">
-                                <a href="cart.html">
+                                <Link to="/shopping-cart">
                                     {/* <b className="hidden-xs">Your bag</b> */}
                                     <span className="cart-icon">
                                         <i className="fa fa-shopping-bag" aria-hidden="true"></i>
                                         <span className="cart-label">5</span>
                                     </span>
                                     <span className="cart-title hidden-xs">$1195.00</span>
-                                </a>
+                                </Link>
                                 <div className="cart-toggle hidden-xs hidden-sm">
                                     <div className="cart-overflow">
                                         <div className="cart-entry clearfix">

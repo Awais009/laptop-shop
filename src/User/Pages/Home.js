@@ -367,7 +367,7 @@ const Home = () => {
                 </div>
                 <div className="empty-space col-xs-b30"></div>
                 {navigations ? navigations.map((navigation, i) => (
-                <div className={`tab-entry ${!i ?  'visible' : ''} `}>
+                <div className={`tab-entry ${!i ?  'visible' : ''} `} key={i}>
                   <div className="row nopadding">
                   {navigation.products ? navigation.products.map((product, j) => (
                       <div className="col-sm-3" key={j} >

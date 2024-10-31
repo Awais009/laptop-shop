@@ -25,6 +25,46 @@ const ProductList = () => {
   
     fetchData();
   }, []);
+
+  const addCart = async (item) => {
+    console.log(item);
+    try {
+      const response = await axios.post(
+        `http://localhost/laptop-backend/api/cart/carts`, 
+        {
+          // Include relevant item details here
+          product_id: item.product_id, // or whatever your API expects
+          qty: item.quantity || 1 // Set a default quantity if not provided
+        },
+        {
+          headers: {
+            Authorization: `Bearer 3|BW05sBS54RQekpRWwRaljHwymjD5gQzKnvGJYrr230b926e7`,
+          },
+        }
+      );
+  
+      console.log(response.data); // Adjust based on your API response
+  
+    } catch (error) {
+        if (error.response) {
+            console.error("Error response data:", error.response.data.errors['qty']);
+          } else {
+            console.error("Error message:", error.message);
+          }
+    }
+  };
+  
+
+  const handleAddCart = (id) => {
+    const newItem = {
+      product_id: id, // Example ID, replace with actual item ID or details
+      qty: 1, // Default quantity
+      // Add other necessary item details here
+    };
+  
+    addCart(newItem);
+  };
+  
     
     const initialMinPrice = 40;
     const initialMaxPrice = 900;
@@ -96,7 +136,7 @@ const ProductList = () => {
                         <div className="products-wrapper">
                             <div className="row nopadding">
                             { products ? products.map((product, i) => (
- <div className="col-sm-4" key={i}>
+ <div className="col-sm-4" key={product.id}>
  <div className="product-shortcode style-1">
      <div className="title">
          <div className="simple-article size-1 color col-xs-b5"><a href="#">SMART PHONES</a></div>
@@ -112,7 +152,7 @@ const ProductList = () => {
                          <span className="text">Learn More</span>
                      </span>
                  </Link>
-                 <a className="button size-2 style-3" href="#">
+                 <a className="button size-2 style-3" href="javascript:" onClick={() => handleAddCart(product.id)}>
                      <span className="button-wrapper">
                          <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
                          <span className="text">Add To Cart</span>
@@ -190,7 +230,7 @@ const ProductList = () => {
                         min={initialMinPrice}
                         max={initialMaxPrice}
                         step={5}
-                        onChange={handleSliderChange}
+                        onChange={ handleSliderChange}
                         renderTrack={(props, state) => <div {...props} className="track" />}
                         renderThumb={(props) => <div {...props} className="thumb" />}
                         />
