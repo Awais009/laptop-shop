@@ -2,16 +2,20 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 import { DataContext } from '../Context';
+import axios from 'axios';
 const Header = () => {
 
+    const { context, setContext, fetchCart, deleteCart } = useContext(DataContext);
 
-    const { context, setContext } = useContext(DataContext);
+    const calculateTotalPrice = (updatedCarts) => {
+        return updatedCarts.reduce((sum, cart) => sum + cart.product.price * cart.qty, 0);
+      };
 
+    useEffect(() => {
+        fetchCart();
+      }, []);
     
-    const { totalPrice, setTotalPrice } = useState(0);
-            const calculateTotalPrice = (updatedCarts) => {
-                return updatedCarts.reduce((sum, cart) => sum + cart.product.price * cart.qty, 0);
-              };
+            
     return (
         <>
             {/* <!-- HEADER --> */}
@@ -39,7 +43,7 @@ const Header = () => {
                                         {/* <b className="hidden-xs">Your bag</b> */}
                                         <span className="cart-icon">
                                             <i className="fa fa-shopping-bag" aria-hidden="true"></i>
-                                            <span className="cart-label">5</span>
+                                            <span className="cart-label">{context?.cart.length}</span>
                                         </span>
                                         <span className="cart-title hidden-xs">${calculateTotalPrice(context?.cart)}</span>
                                     </Link>
@@ -47,14 +51,14 @@ const Header = () => {
                                         <div className="cart-overflow">
                                             {context?.cart.map((cart, i) => {
                                                 return (
-                                                    <div className="cart-entry clearfix">
-                                                        <a className="cart-entry-thumbnail" href="#"><img src={context?.storagePath+'/'+cart.product.image.path} width={85} height={85}  alt="" /></a>
+                                                    <div className="cart-entry clearfix" key={i}>
+                                                        <Link className="cart-entry-thumbnail" to={`/product/${cart.product.SKU}`}><img src={context?.storagePath+'/'+cart.product.image.path} width={85} height={85}  alt="" /></Link>
                                                         <div className="cart-entry-description">
                                                             <table>
                                                                 <tbody>
                                                                     <tr>
                                                                         <td>
-                                                                            <div className="h6"><a href="#">{cart?.product?.title}</a></div>
+                                                                            <div className="h6"><Link to={`/product/${cart.product.SKU}`}>{cart?.product?.title}</Link></div>
                                                                             <div className="simple-article size-1">QUANTITY: {cart?.qty}</div>
                                                                         </td>
                                                                         <td>
@@ -65,7 +69,7 @@ const Header = () => {
                                                                             <div className="cart-color" style={{ color: "#eee" }}></div>
                                                                         </td>
                                                                         <td>
-                                                                            <div className="button-close"></div>
+                                                                            <div className="button-close" onClick={() => deleteCart(cart.id)}></div>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>

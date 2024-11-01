@@ -1,7 +1,9 @@
 // import React from "react";
-import React, { useEffect , useRef , useState  } from 'react';
+import React, { useContext, useEffect , useRef , useState  } from 'react';
 import { Link } from "react-router-dom";
+import { DataContext } from '../Context';
 const Checkout = () => {
+    const { context, } = useContext(DataContext);
     
     return (
         <>
@@ -134,72 +136,38 @@ const Checkout = () => {
                 </div>
                 <div className="col-md-6">
                     <h4 className="h4 col-xs-b25">your order</h4>
-                    <div className="cart-entry clearfix">
-                        <a className="cart-entry-thumbnail" href="#"><img src="assets/img/product-1.png" alt="" /></a>
-                        <div className="cart-entry-description">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div className="h6"><a href="#">modern beat ht</a></div>
-                                            <div className="simple-article size-1">QUANTITY: 2</div>
-                                        </td>
-                                        <td>
-                                            <div className="simple-article size-3 grey">$155.00</div>
-                                            <div className="simple-article size-1">TOTAL: $310.00</div>
-                                        </td>
-                                        <td>
-                                            <div className="cart-color" style={{ background: "#eee" }}></div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div className="cart-entry clearfix">
-                        <a className="cart-entry-thumbnail" href="#"><img src="assets/img/product-2.png" alt="" /></a>
-                        <div className="cart-entry-description">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div className="h6"><a href="#">modern beat ht</a></div>
-                                            <div className="simple-article size-1">QUANTITY: 2</div>
-                                        </td>
-                                        <td>
-                                            <div className="simple-article size-3 grey">$155.00</div>
-                                            <div className="simple-article size-1">TOTAL: $310.00</div>
-                                        </td>
-                                        <td>
-                                            <div className="cart-color" style={{ background: "#bf584b" }}></div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div className="cart-entry clearfix">
-                        <a className="cart-entry-thumbnail" href="#"><img src="assets/img/product-3.png" alt="" /></a>
-                        <div className="cart-entry-description">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div className="h6"><a href="#">modern beat ht</a></div>
-                                            <div className="simple-article size-1">QUANTITY: 2</div>
-                                        </td>
-                                        <td>
-                                            <div className="simple-article size-3 grey">$155.00</div>
-                                            <div className="simple-article size-1">TOTAL: $310.00</div>
-                                        </td>
-                                        <td>
-                                            <div className="cart-color" style={{ background: "#facc22" }}></div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    {context?.cart.map((cart, i) => {
+
+                return(
+<div className="cart-entry clearfix">
+ <Link className="cart-entry-thumbnail" to={`/product/${cart.product.SKU}`}><img src={context.storagePath+"/"+cart.product.image.path} width={85} height={85} alt="" /></Link>
+ <div className="cart-entry-description">
+     <table>
+         <tbody>
+             <tr>
+                 <td>
+                     <div className="h6"><Link to={`/product/${cart.product.SKU}`}>{cart.product.title}</Link></div>
+                     <div className="simple-article size-1">QUANTITY: {cart.qty}</div>
+                 </td>
+                 <td>
+                     <div className="simple-article size-3 grey">${cart.product.price}</div>
+                     <div className="simple-article size-1">TOTAL: ${cart.qty*cart.product.price}</div>
+                 </td>
+                 <td>
+                     <div className="cart-color" style={{ background: "#eee" }}></div>
+                 </td>
+             </tr>
+         </tbody>
+     </table>
+ </div>
+</div>
+        )
+    })}
+                   
+
+
+                   
+
                     <div className="order-details-entry simple-article size-3 grey uppercase">
                         <div className="row">
                             <div className="col-xs-6">

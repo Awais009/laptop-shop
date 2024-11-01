@@ -316,16 +316,7 @@ $(function() {
     	setTimeout(function(){$('.products-content').removeClass('notransition');},0);
     });
 
-    //quantity selector
-    $(document).on('click', '.quantity-select .minus', function(){
-    	var newValue = parseInt($(this).parent().find('.number').text(), 10);
-    	$(this).parent().find('.number').text(newValue>1?(newValue-1):newValue);
-    });
-
-    $(document).on('click', '.quantity-select .plus', function(){
-    	var newValue = parseInt($(this).parent().find('.number').text(), 10);
-    	$(this).parent().find('.number').text(newValue+1);
-    });
+   
 
     //rating
     $(document).on('click', '.rate-wrapper.set .fa', function(){
