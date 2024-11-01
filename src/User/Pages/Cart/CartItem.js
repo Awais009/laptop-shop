@@ -3,50 +3,22 @@ import React, { useContext, useEffect, useState } from 'react';
 import { DataContext } from '../../Context';
 
 const CartItem = ({ setTotalPrice }) => {
-  const { context, setContext } = useContext(DataContext);
+  const { context, deleteCart , setContext } = useContext(DataContext);
   const [carts, setCarts] = useState([]);
-  const [storagePath, setStoragePath] = useState('');
-  const apiUrl = process.env.REACT_APP_API_URL; // Or use a config file
+  const apiUrl = 'http://localhost/laptop-backend/api'; // Or use a config file
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`http://localhost/laptop-backend/api/cart/carts`, {
-          headers: {
-            Authorization: `Bearer 3|BW05sBS54RQekpRWwRaljHwymjD5gQzKnvGJYrr230b926e7`,
-          },
-        });
-        
-        setContext({
-          ...context,
-          cart: response.data.cart
-        });
-
-        
-        setCarts(response.data.cart);
-        setStoragePath(response.data.storagePath);
-        
-        
-        // Calculate the total price on initial load
-        calculateTotalPrice(response.data.cart);
-
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+    setCarts(context?.cart);
+    setTotalPrice(calculateTotalPrice(context?.cart));
+  }, [context?.cart, setTotalPrice]);
 
   const calculateTotalPrice = (updatedCarts) => {
-    const total = updatedCarts.reduce((sum, cart) => sum + cart.product.price * cart.qty, 0);
-    setTotalPrice(total);
+    return updatedCarts.reduce((sum, cart) => sum + cart.product.price * cart.qty, 0);
   };
-
   const cartUpdate = async (id, qty) => {
     try {
       const response = await axios.put(
-        `http://localhost/laptop-backend/api/cart/carts/${id}`,
+        `${apiUrl}/cart/carts/${id}`,
         { qty },
         {
           headers: {
@@ -55,63 +27,43 @@ const CartItem = ({ setTotalPrice }) => {
         }
       );
 
-      setCarts((prevCarts) =>
-        prevCarts.map(cart => 
-          cart.id === id ? { ...cart, qty: response.data.cart.qty } : cart
-        )
-       
+      const updatedCarts = carts.map(cart =>
+        cart.id === id ? { ...cart, qty: response.data.cart.qty } : cart
       );
 
+      setCarts(updatedCarts);
       setContext(prevContext => ({
         ...prevContext,
-        cart: prevContext.cart.map(cart => 
-            cart.id === id ? { ...cart, qty: response.data.cart.qty } : cart
-        )
-    }));
-      
-      // Recalculate the total price after updating cart quantity
-      calculateTotalPrice(
-        carts.map(cart => (cart.id === id ? { ...cart, qty: response.data.cart.qty } : cart))
-      );
+        cart: updatedCarts,
+      }));
+
+      // Update total price in the parent component
+      setTotalPrice(calculateTotalPrice(updatedCarts));
     } catch (error) {
       console.error("Error updating cart:", error.message);
     }
   };
 
-  const deleteCart = async (id) => {
-    try {
-      await axios.delete(`http://localhost/laptop-backend/api/cart/carts/${id}`, {
-        headers: {
-          Authorization: `Bearer 3|BW05sBS54RQekpRWwRaljHwymjD5gQzKnvGJYrr230b926e7`,
-        },
-      });
-  
-      setCarts((prevCarts) => {
-        const updatedCarts = prevCarts.filter(cart => cart.id !== id);
-        calculateTotalPrice(updatedCarts); // Recalculate total price after deletion
-        return updatedCarts;
-      });
-    } catch (error) {
-      console.error("Error deleting cart:", error.message);
-    }
-  };
+ 
 
   return (
     <>
-      {carts && carts.map((cart) => (
+      {carts?.map((cart) => (
         <tr key={cart.id}>
           <td data-title=" ">
             <a className="cart-entry-thumbnail" href="#">
-              <img src={`${storagePath}/${cart.product.image?.path}`} width="85" height="85" alt=""/>
+              <img src={`${context?.storagePath}/${cart.product.image?.path}`} width="85" height="85" alt="" />
             </a>
           </td>
-          <td data-title=" "><h6 className="h6"><a href="#">{cart.product.title}</a></h6></td>
+          <td data-title=" ">
+            <h6 className="h6"><a href="#">{cart.product.title}</a></h6>
+          </td>
           <td data-title="Price: ">${cart.product.price}</td>
           <td data-title="Quantity: ">
             <div className="quantity-select">
-              <span className="minus" onClick={() => cartUpdate(cart.id, --cart.qty)}></span>
+              <span className="minus" onClick={() => cart.qty > 1 && cartUpdate(cart.id, cart.qty - 1)}></span>
               <span className="number">{cart.qty}</span>
-              <span className="plus" onClick={() => cartUpdate(cart.id, ++cart.qty)}></span>
+              <span className="plus" onClick={() => cartUpdate(cart.id, cart.qty + 1)}></span>
             </div>
           </td>
           <td data-title="Color: "><div className="cart-color" style={{ background: "#eee" }}></div></td>

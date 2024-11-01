@@ -1,14 +1,17 @@
 // import React from "react";
-import React, { useEffect, useRef, useState } from 'react';
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Link, useLocation, useParams } from "react-router-dom";
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { DataContext } from '../../Context';
 
 const ProductDetail = () => {
+    const {addCart} =  useContext(DataContext);
+    let location = useLocation();
     const { SKU } = useParams(); // Get the ID from the URL
     const [product, setProduct] = useState([]);
     const [navigations, setNavigations] = useState([]);
     const [storagePath, setStoragePath] = useState('');
+    const [quantity, setQuantity] = useState(1);
     const apiUrl = process.env.REACT_APP_API_URL; // Or use a config file
 
     useEffect(() => {
@@ -23,11 +26,12 @@ const ProductDetail = () => {
                 console.error("Error fetching data:", error);
             }
         };
+        setQuantity(1)
 
         fetchData();
-    }, []);
+    }, [location]);
 
-   
+
 
     return (
         <>
@@ -58,13 +62,13 @@ const ProductDetail = () => {
                                              ))  }  */}
 
                                             <div className="swiper-slide">
-                                                <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-4.png"></div>
+                                                <div className="product-big-preview-entry " data-background="assets/img/product-4.png"></div>
                                             </div>
                                             <div className="swiper-slide">
-                                                <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-4.png"></div>
+                                                <div className="product-big-preview-entry " data-background="assets/img/product-4.png"></div>
                                             </div>
                                             <div className="swiper-slide">
-                                                <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-4.png"></div>
+                                                <div className="product-big-preview-entry " data-background="assets/img/product-4.png"></div>
                                             </div>
 
 
@@ -123,19 +127,20 @@ const ProductDetail = () => {
                                         <div className="h6 detail-data-title size-1">quantity:</div>
                                     </div>
                                     <div className="col-sm-9">
-                                        <div className="quantity-select">
-                                            <span className="minus"></span>
-                                            <span className="number">1</span>
-                                            <span className="plus"></span>
-                                        </div>
+                                    <div className="quantity-select">
+  <span className="minus" onClick={() => setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1))}></span>
+  <span className="number">{quantity}</span>
+  <span className="plus" onClick={() => setQuantity((prevQuantity) => prevQuantity + 1)}></span>
+</div>
+
                                     </div>
                                 </div>
                                 <div className="row m5 col-xs-b40">
                                     <div className="col-sm-6 col-xs-b10 col-sm-b0">
-                                        <Link className="button size-2 style-2 block" to="/shopping-cart">
-                                            <span className="button-wrapper">
+                                        <Link className="button size-2 style-2 block" onClick={() => addCart({product_id : product.id, qty:quantity})}>
+                                            <span className="button-wrapper" >
                                                 <span className="icon"><img src="assets/img/icon-2.png" alt="" /></span>
-                                                <span className="text">add to cart</span>
+                                                <span className="text"  >add to cart</span>
                                             </span>
                                         </Link>
                                     </div>
@@ -199,11 +204,11 @@ const ProductDetail = () => {
                                 </div>
                                 {product.images && product.images.map((image, i) => (
                                     i > 1 && (
-                                        
+
                                         <React.Fragment key={i}>
-                                           
+
                                             <div className="empty-space col-xs-b35 col-md-b70"></div>
-                                            <div className={`left-right-entry clearfix ${i % 2 == 0  ? "align-right" : ""}`}>
+                                            <div className={`left-right-entry clearfix ${i % 2 == 0 ? "align-right" : ""}`}>
                                                 <div className="preview-wrapper">
                                                     <img className="preview" src={`${storagePath}/${image.path}`} width={490} height={243} alt="" />
                                                 </div>
@@ -230,7 +235,7 @@ const ProductDetail = () => {
                         </div>
 
 
-                      
+
 
                         <div className="empty-space col-xs-b35 col-md-b70"></div>
                         <div className="empty-space col-md-b70"></div>
@@ -239,596 +244,54 @@ const ProductDetail = () => {
                     <div className="col-md-3 col-md-pull-9">
                         <div className="h4 col-xs-b10">popular categories</div>
                         <ul className="categories-menu transparent">
-                                {navigations && navigations.map((navigation,i)=>(
- <li>
- <a href="#">{navigation.title}</a>
- 
- { navigation.items.length > 0  && <div className="toggle"></div>}
- <ul>
- {navigation.items && navigation.items.map((item,j)=>(
-     <li>
-         <a href="#">{item.title}</a>
-        
-     </li>
- ))}
-     
-    
- </ul>
-</li>
-                                ))}
-                           
+                            {navigations && navigations.map((navigation, i) => (
+                                <li>
+                                    <Link to={`/${navigation.title}/product-list`}>{navigation.title}</Link>
 
+                                    {navigation.items.length > 0 && <div className="toggle"></div>}
+                                    <ul>
+                                        {navigation.items && navigation.items.map((item, j) => (
+                                            <li>
+                                                <Link to={`/${navigation.title}/${item.title}/product-list`}>{item.title}</Link>
+
+                                            </li>
+                                        ))}
+
+
+                                    </ul>
+                                </li>
+                            ))}
                         </ul>
-
-                        <div className="empty-space col-xs-b25 col-sm-b60"></div>
-
-
                     </div>
                 </div>
 
-                <div className="swiper-container arrows-align-top" data-breakpoints="1" data-xs-slides="1" data-sm-slides="3" data-md-slides="4" data-lt-slides="4" data-slides-per-view="5">
-                    <div className="h4 swiper-title">accessories</div>
-                    <div className="empty-space col-xs-b20"></div>
-                    <div className="swiper-button-prev style-1"></div>
-                    <div className="swiper-button-next style-1"></div>
-                    <div className="swiper-wrapper">
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-49.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-50.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-51.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-52.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-53.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-54.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-55.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="swiper-pagination relative-pagination visible-xs"></div>
-                </div>
-
-                <div className="empty-space col-xs-b35 col-md-b70"></div>
-                <div className="empty-space col-md-b70"></div>
-
-                <div className="swiper-container arrows-align-top" data-breakpoints="1" data-xs-slides="1" data-sm-slides="3" data-md-slides="4" data-lt-slides="4" data-slides-per-view="5">
-                    <div className="h4 swiper-title">accessories</div>
-                    <div className="empty-space col-xs-b20"></div>
-                    <div className="swiper-button-prev style-1"></div>
-                    <div className="swiper-button-next style-1"></div>
-                    <div className="swiper-wrapper">
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-54.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-55.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-56.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-57.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-58.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-49.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="product-shortcode style-1 small">
-                                <div className="title">
-                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">ACCESSORIES</a></div>
-                                    <div className="h6 animate-to-green"><a href="#">usb watch charger</a></div>
-                                </div>
-                                <div className="preview">
-                                    <img src="assets/img/product-50.jpg" alt="" />
-                                    <div className="preview-buttons valign-middle">
-                                        <div className="valign-middle-content">
-                                            <a className="button size-2 style-2" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-1.png" alt="" /></span>
-                                                    <span className="text">Learn More</span>
-                                                </span>
-                                            </a>
-                                            <a className="button size-2 style-3" href="#">
-                                                <span className="button-wrapper">
-                                                    <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
-                                                    <span className="text">Add To Cart</span>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    <div className="simple-article size-4 dark">$630.00</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="swiper-pagination relative-pagination visible-xs"></div>
-                </div>
-
-                <div className="empty-space col-xs-b35 col-md-b70"></div>
                 <div className="empty-space col-md-b70"></div>
 
                 <div className="row">
-                    <div className="col-sm-6 col-md-3 col-xs-b25">
-                        <div className="h4 col-xs-b25">Hot Sale</div>
-                        <div className="product-shortcode style-4 rounded clearfix">
-                            <a className="preview" href="#"><img src="assets/img/product-28.jpg" alt="" /></a>
-                            <div className="description">
-                                <div className="simple-article color size-1 col-xs-b5">WIRELESS</div>
-                                <h6 className="h6 col-xs-b10"><a href="#">wireless headphones</a></h6>
-                                <div className="simple-article dark">$98.00</div>
-                            </div>
-                        </div>
-                        <div className="col-xs-b10"></div>
-                        <div className="product-shortcode style-4 rounded clearfix">
-                            <a className="preview" href="#"><img src="assets/img/product-29.jpg" alt="" /></a>
-                            <div className="description">
-                                <div className="simple-article color size-1 col-xs-b5">CASES</div>
-                                <h6 className="h6 col-xs-b10"><a href="#">earphones case</a></h6>
-                                <div className="simple-article dark">$12.00</div>
-                            </div>
-                        </div>
-                        <div className="col-xs-b10"></div>
-                        <div className="product-shortcode style-4 rounded clearfix">
-                            <a className="preview" href="#"><img src="assets/img/product-30.jpg" alt="" /></a>
-                            <div className="description">
-                                <div className="simple-article color size-1 col-xs-b5">CASES</div>
-                                <h6 className="h6 col-xs-b10"><a href="#">headphones case</a></h6>
-                                <div className="simple-article"><span className="color">$24.00</span>&nbsp;&nbsp;&nbsp;<span className="line-through">$32.00</span></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-6 col-md-3 col-xs-b25">
-                        <div className="h4 col-xs-b25">Top Rated</div>
-                        <div className="product-shortcode style-4 rounded clearfix">
-                            <a className="preview" href="#"><img src="assets/img/product-31.jpg" alt="" /></a>
-                            <div className="description">
-                                <div className="simple-article color size-1 col-xs-b5">WIRELESS</div>
-                                <h6 className="h6 col-xs-b10"><a href="#">wireless headphones</a></h6>
-                                <div className="simple-article dark">$98.00</div>
-                            </div>
-                        </div>
-                        <div className="col-xs-b10"></div>
-                        <div className="product-shortcode style-4 rounded clearfix">
-                            <a className="preview" href="#"><img src="assets/img/product-32.jpg" alt="" /></a>
-                            <div className="description">
-                                <div className="simple-article color size-1 col-xs-b5">CASES</div>
-                                <h6 className="h6 col-xs-b10"><a href="#">earphones case</a></h6>
-                                <div className="simple-article dark">$12.00</div>
-                            </div>
-                        </div>
-                        <div className="col-xs-b10"></div>
-                        <div className="product-shortcode style-4 rounded clearfix">
-                            <a className="preview" href="#"><img src="assets/img/product-33.jpg" alt="" /></a>
-                            <div className="description">
-                                <div className="simple-article color size-1 col-xs-b5">CASES</div>
-                                <h6 className="h6 col-xs-b10"><a href="#">headphones case</a></h6>
-                                <div className="simple-article dark">$4.00</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-6 col-md-3 col-xs-b25">
-                        <div className="h4 col-xs-b25">Popular</div>
-                        <div className="product-shortcode style-4 rounded clearfix">
-                            <a className="preview" href="#"><img src="assets/img/product-34.jpg" alt="" /></a>
-                            <div className="description">
-                                <div className="simple-article color size-1 col-xs-b5">WIRELESS</div>
-                                <h6 className="h6 col-xs-b10"><a href="#">wireless headphones</a></h6>
-                                <div className="simple-article dark">$98.00</div>
-                            </div>
-                        </div>
-                        <div className="col-xs-b10"></div>
-                        <div className="product-shortcode style-4 rounded clearfix">
-                            <a className="preview" href="#"><img src="assets/img/product-35.jpg" alt="" /></a>
-                            <div className="description">
-                                <div className="simple-article color size-1 col-xs-b5">CASES</div>
-                                <h6 className="h6 col-xs-b10"><a href="#">earphones case</a></h6>
-                                <div className="simple-article dark">$12.00</div>
-                            </div>
-                        </div>
-                        <div className="col-xs-b10"></div>
-                        <div className="product-shortcode style-4 rounded clearfix">
-                            <a className="preview" href="#"><img src="assets/img/product-36.jpg" alt="" /></a>
-                            <div className="description">
-                                <div className="simple-article color size-1 col-xs-b5">CASES</div>
-                                <h6 className="h6 col-xs-b10"><a href="#">headphones case</a></h6>
-                                <div className="simple-article dark">$4.00</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-6 col-md-3 col-xs-b25">
-                        <div className="h4 col-xs-b25">Best Choice</div>
-                        <div className="product-shortcode style-4 rounded clearfix">
-                            <a className="preview" href="#"><img src="assets/img/product-37.jpg" alt="" /></a>
-                            <div className="description">
-                                <div className="simple-article color size-1 col-xs-b5">WIRELESS</div>
-                                <h6 className="h6 col-xs-b10"><a href="#">wireless headphones</a></h6>
-                                <div className="simple-article dark">$98.00</div>
-                            </div>
-                        </div>
-                        <div className="col-xs-b10"></div>
-                        <div className="product-shortcode style-4 rounded clearfix">
-                            <a className="preview" href="#"><img src="assets/img/product-38.jpg" alt="" /></a>
-                            <div className="description">
-                                <div className="simple-article color size-1 col-xs-b5">CASES</div>
-                                <h6 className="h6 col-xs-b10"><a href="#">earphones case</a></h6>
-                                <div className="simple-article dark">$12.00</div>
-                            </div>
-                        </div>
-                        <div className="col-xs-b10"></div>
-                        <div className="product-shortcode style-4 rounded clearfix">
-                            <a className="preview" href="#"><img src="assets/img/product-39.jpg" alt="" /></a>
-                            <div className="description">
-                                <div className="simple-article color size-1 col-xs-b5">CASES</div>
-                                <h6 className="h6 col-xs-b10"><a href="#">headphones case</a></h6>
-                                <div className="simple-article dark">$4.00</div>
-                            </div>
-                        </div>
-                    </div>
+                            {navigations?.map((navigation)=>(
+                                navigation.products.length > 0 &&
+                                 <div className="col-sm-6 col-md-3 col-xs-b25">
+                                 <div className="h4 col-xs-b25">{navigation.title}</div>
+                                 {navigation.products?.map((product)=>(
+                                    <>
+                                     <div className="col-xs-b10"></div>
+                                  <div className="product-shortcode style-4 rounded clearfix">
+                                      <Link className="preview" to={"/product/"+product.SKU}><img src={storagePath+"/"+product.image.path} alt="" /></Link>
+                                      <div className="description">
+                                          <div className="simple-article color size-1 col-xs-b5">{navigation.title}</div>
+                                          <h6 className="h6 col-xs-b10"><Link to={"/product/"+product.SKU}>{product.title}</Link></h6>
+                                          <div className="simple-article dark">${product.price}</div>
+                                      </div>
+                                  </div>
+                                    </>
+                                    
+                                 ))}
+                                
+                                
+                             </div>
+                            ))}
+                   
+                   
                 </div>
 
             </div>
