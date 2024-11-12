@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useParams } from "react-router-dom";
 import axios from 'axios';
 import { DataContext } from '../../Context';
+import $ from 'jquery';
 
 const ProductDetail = () => {
     const {addCart} =  useContext(DataContext);
@@ -21,6 +22,13 @@ const ProductDetail = () => {
                 setProduct(response.data.product);
                 setNavigations(response.data.navigations);
                 setStoragePath(response.data.storagePath);
+
+                setTimeout(() => {
+                    let winW = $(window).width();
+                    let winH = $(window).height();
+                    let headerH = $('.header-empty-space').height();
+                    $('.page-height').css({'height':(winH-headerH<=500)?500:(winH-headerH)});
+                }, 500);
 
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -53,15 +61,15 @@ const ProductDetail = () => {
                                     <div className="swiper-container swiper-control-top">
                                         <div className="swiper-wrapper">
 
-                                            {/* {  product.images && product.images.map((image,i)=>(
+                                            {  product.images && product.images.map((image,i)=>(
                                             <div className="swiper-slide">
                                                 <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-4.png"></div>
                                             </div>
                                            
 
-                                             ))  }  */}
+                                             ))  } 
 
-                                            <div className="swiper-slide">
+                                            {/* <div className="swiper-slide">
                                                 <div className="product-big-preview-entry " data-background="assets/img/product-4.png"></div>
                                             </div>
                                             <div className="swiper-slide">
@@ -69,7 +77,7 @@ const ProductDetail = () => {
                                             </div>
                                             <div className="swiper-slide">
                                                 <div className="product-big-preview-entry " data-background="assets/img/product-4.png"></div>
-                                            </div>
+                                            </div> */}
 
 
                                         </div>
@@ -93,7 +101,7 @@ const ProductDetail = () => {
 
                             </div>
                             <div className="col-sm-6">
-                                <div className="simple-article size-3 grey col-xs-b5">SMART WATCHES</div>
+                                <div className="simple-article size-3 grey col-xs-b5">{product?.navigation_item?.title}</div>
                                 <div className="h3 col-xs-b25">{product?.title}
                                 </div>
                                 <div className="row col-xs-b25">

@@ -8,6 +8,9 @@ export const Context = ({ children }) => {
         cart: [],
         storagePath: '',
         cartTotalPrice: '',
+        product: {},
+        token: sessionStorage?.getItem('token') ? sessionStorage?.getItem('token')  : '',
+        user: sessionStorage?.getItem('user') ? JSON.parse(sessionStorage?.getItem('user')) : {},
     });
 
     const fetchCart = async () => {
@@ -31,6 +34,21 @@ export const Context = ({ children }) => {
         console.error("Error fetching data:", error);
       }
     };
+
+    const quickView = async (SKU) => {
+      try {
+          const response = await axios.get(`http://localhost/laptop-backend/api/quick-view/${SKU}`);
+          setContext({
+            ...context,
+            product: response.data.product,
+            storagePath: response.data.storagePath,
+          });
+
+      } catch (error) {
+          console.error("Error fetching data:", error);
+      }
+  };
+
 
     const addCart = async (data) => {
       try {
@@ -99,7 +117,7 @@ export const Context = ({ children }) => {
      
 
     return (
-        <DataContext.Provider value={{ context, setContext, fetchCart, deleteCart , addCart }}>
+        <DataContext.Provider value={{ context, setContext, fetchCart, deleteCart , addCart, quickView }}>
             {children}
         </DataContext.Provider>
     )

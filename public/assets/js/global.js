@@ -77,6 +77,7 @@ $(function() {
 	_functions.resizeCall = function(){
 		_functions.pageCalculations();
 	};
+	
 	if(!_ismobile){
 		$(window).resize(function(){
 			_functions.resizeCall();

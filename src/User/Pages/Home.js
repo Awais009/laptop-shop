@@ -9,7 +9,7 @@ const Home = () => {
   const [data, setData] = useState([]);
   const [navigations, setNavigations] = useState([]);
   const [storagePath, setStoragePath] = useState('');
-  const { context, setContext, addCart } = useContext(DataContext);
+  const { context, setContext, addCart, quickView } = useContext(DataContext);
 
   const apiUrl = process.env.REACT_APP_API_URL; // Or use a config file
   
@@ -302,7 +302,7 @@ const Home = () => {
                                   aria-hidden="true"
                                 ></i>
                               </a>
-                              <a className="entry open-popup" data-rel="3">
+                              <a className="entry open-popup" data-rel="3" onClick={()=> quickView(product.SKU)} >
                                 <i className="fa fa-eye" aria-hidden="true"></i>
                               </a>
                               <a className="entry">

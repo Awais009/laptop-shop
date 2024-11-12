@@ -23,7 +23,7 @@ const ProductList = () => {
 
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost/laptop-backend/api/products?nav=${nav || null}&&nav_item=${nav_item || null}`);
+                const response = await axios.get(`http://localhost/laptop-backend/api/products?nav=${nav || ''}&&nav_item=${nav_item || ''}`);
                 setProducts(response.data.products);
                 setCategories(response.data.categories);
                 setStoragePath(response.data.storagePath);
@@ -99,7 +99,7 @@ const ProductList = () => {
                                             <div className="product-shortcode style-1">
                                                 <div className="title">
                                                     <div className="simple-article size-1 color col-xs-b5"><a href="#">SMART PHONES</a></div>
-                                                    <div className="h6 animate-to-green"><a href="#">{product.title}</a></div>
+                                                    <div className="h6 animate-to-green"><Link to={`/product/${product.SKU}`}>{product.title}</Link></div>
                                                 </div>
                                                 <div className="preview">
                                                     <img src={`${storagePath}/${product.image.path}`} style={{height:'170px'}} alt="producImage"  />
