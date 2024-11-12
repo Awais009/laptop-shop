@@ -3,7 +3,7 @@ import React, { useContext, useEffect , useRef , useState  } from 'react';
 import { Link } from "react-router-dom";
 import { DataContext } from '../Context';
 const Checkout = () => {
-    const { context, } = useContext(DataContext);
+    const { context, deleteCart} = useContext(DataContext);
     
     return (
         <>
@@ -139,7 +139,7 @@ const Checkout = () => {
                     {context?.cart.map((cart, i) => {
 
                 return(
-<div className="cart-entry clearfix">
+<div className="cart-entry clearfix" key={i}>
  <Link className="cart-entry-thumbnail" to={`/product/${cart.product.SKU}`}><img src={context.storagePath+"/"+cart.product.image.path} width={85} height={85} alt="" /></Link>
  <div className="cart-entry-description">
      <table>
@@ -154,7 +154,7 @@ const Checkout = () => {
                      <div className="simple-article size-1">TOTAL: ${cart.qty*cart.product.price}</div>
                  </td>
                  <td>
-                     <div className="cart-color" style={{ background: "#eee" }}></div>
+                 <div className="button-close" onClick={() => deleteCart(cart.id)}></div>
                  </td>
              </tr>
          </tbody>

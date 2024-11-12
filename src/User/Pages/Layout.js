@@ -6,8 +6,7 @@ import ScrollToTop from "../Components/ScrollToTop";
 import { Outlet } from "react-router-dom";
 import { Context } from '../Context';
 
-const Layout = () => {
-
+const UserLayout = () => {
 
   return (
     <>
@@ -21,4 +20,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default UserLayout;

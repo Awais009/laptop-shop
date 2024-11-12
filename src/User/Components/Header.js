@@ -6,16 +6,24 @@ import axios from 'axios';
 const Header = () => {
 
     const { context, setContext, fetchCart, deleteCart } = useContext(DataContext);
-
     const calculateTotalPrice = (updatedCarts) => {
         return updatedCarts.reduce((sum, cart) => sum + cart.product.price * cart.qty, 0);
-      };
+    };
+
+    const logout = () => {
+        sessionStorage.clear()
+        setContext({
+            ...context,
+            token: ''
+        })
+    }
 
     useEffect(() => {
         fetchCart();
-      }, []);
-    
-            
+    }, []);
+
+
+
     return (
         <>
             {/* <!-- HEADER --> */}
@@ -52,7 +60,7 @@ const Header = () => {
                                             {context?.cart.map((cart, i) => {
                                                 return (
                                                     <div className="cart-entry clearfix" key={i}>
-                                                        <Link className="cart-entry-thumbnail" to={`/product/${cart.product.SKU}`}><img src={context?.storagePath+'/'+cart.product.image.path} width={85} height={85}  alt="" /></Link>
+                                                        <Link className="cart-entry-thumbnail" to={`/product/${cart.product.SKU}`}><img src={context?.storagePath + '/' + cart.product.image.path} width={85} height={85} alt="" /></Link>
                                                         <div className="cart-entry-description">
                                                             <table>
                                                                 <tbody>
@@ -63,7 +71,7 @@ const Header = () => {
                                                                         </td>
                                                                         <td>
                                                                             <div className="simple-article size-3 grey">${cart?.product?.price}</div>
-                                                                            <div className="simple-article size-1">TOTAL: ${cart?.product?.price*cart?.qty}</div>
+                                                                            <div className="simple-article size-1">TOTAL: ${cart?.product?.price * cart?.qty}</div>
                                                                         </td>
                                                                         <td>
                                                                             <div className="cart-color" style={{ color: "#eee" }}></div>
@@ -100,9 +108,17 @@ const Header = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="entry">
-                                    <a className="open-popup" data-rel="1"><b>login</b></a>&nbsp; or &nbsp;<a className="open-popup" data-rel="2"><b>register</b></a>
-                                </div>
+                                {context?.token ?
+                                    <div className="entry">
+                                        <a href='javascript:;' onClick={() => logout()}><b>logout</b></a>
+                                    </div>
+                                    :
+
+                                    <div className="entry">
+                                        <a className="open-popup" data-rel="1"><b>login</b></a>&nbsp; or &nbsp;<a className="open-popup" data-rel="2"><b>register</b></a>
+                                    </div>
+                                }
+
                                 <div className="hamburger-icon">
                                     <span></span>
                                     <span></span>
