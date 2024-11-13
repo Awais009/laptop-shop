@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import { DataContext } from "../Context";
+import $ from "jquery";
+
 
 const Login = ()=>{
     
@@ -28,6 +30,7 @@ const Login = ()=>{
                 user:response.data.user
             })
 
+            $('.button-close').trigger('click')
         setSuccess('User login successfully!');
         setError(null);
         setEmail('');

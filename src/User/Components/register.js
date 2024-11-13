@@ -1,7 +1,10 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { DataContext } from "../Context";
+import $ from "jquery";
 
 const Register = ()=>{
+    const {context,setContext} = useContext(DataContext)
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -26,6 +29,14 @@ const Register = ()=>{
           password_confirmation: confirmPassword
         });
 
+        sessionStorage.setItem('token',response.data.token)
+        sessionStorage.setItem('user',JSON.stringify(response.data.user))
+          setContext({
+              ...context,
+              token:response.data.token,
+              user:response.data.user
+          })
+            $('.button-close').trigger('click')
         setSuccess('User registered successfully!');
         setError(null);
         setName('');
