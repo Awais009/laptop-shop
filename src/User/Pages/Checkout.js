@@ -2,11 +2,64 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 import { DataContext } from '../Context';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 const Checkout = () => {
-    const { context, deleteCart } = useContext(DataContext);
+    const { context,setContext, deleteCart } = useContext(DataContext);
+    const [ errors, setErrors ] = useState([]);
 
     const calculateTotalPrice = (updatedCarts) => {
         return updatedCarts.reduce((sum, cart) => sum + cart.product.price * cart.qty, 0);
+    };
+
+    const [formData, setFormData] = useState({
+        full_name: "",
+        phone_number: "",
+        address: "",
+        address2: "",
+        country: "",
+        state: "",
+        city: "",
+        zip_code: "",
+        message: "",
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = async  (e) => {
+        e.preventDefault();
+        setErrors([])
+        try {
+            const response = await axios.post("http://localhost/laptop-backend/api/checkout", formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${context.token}`,
+                    },
+                }
+            );
+            toast.success(response.data.message);
+            console.log(response);
+            setContext({
+                ...context,
+                cart:[]
+            })
+            
+        } catch (error) {
+            console.log(error);
+            
+            if (error.response) {
+                toast.error(`Error: ${error.response.data.message}`);
+                setErrors(error.response.data.errors)
+            } else {
+                toast.error("Something went wrong. Please try again.");
+            }
+        } 
     };
 
     return (
@@ -31,112 +84,151 @@ const Checkout = () => {
                 <div className="row">
                     <div className="col-md-6 col-xs-b50 col-md-b0">
                         <h4 className="h4 col-xs-b25">billing details</h4>
-                        <select className="SlectBox">
-                            <option disabled="disabled" >Choose country</option>
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="mercedes">Mercedes</option>
-                            <option value="audi">Audi</option>
-                        </select>
-                        <div className="empty-space col-xs-b20"></div>
-                        <div className="row m10">
-                            <div className="col-sm-6">
-                                <input className="simple-input" type="text" value="" placeholder="First name" />
-                                <div className="empty-space col-xs-b20"></div>
-                            </div>
-                            <div className="col-sm-6">
-                                <input className="simple-input" type="text" value="" placeholder="Last name" />
-                                <div className="empty-space col-xs-b20"></div>
-                            </div>
-                        </div>
-                        <input className="simple-input" type="text" value="" placeholder="Company name" />
-                        <div className="empty-space col-xs-b20"></div>
-                        <input className="simple-input" type="text" value="" placeholder="Street address" />
-                        <div className="empty-space col-xs-b20"></div>
-                        <div className="row m10">
-                            <div className="col-sm-6">
-                                <input className="simple-input" type="text" value="" placeholder="Appartment" />
-                                <div className="empty-space col-xs-b20"></div>
-                            </div>
-                            <div className="col-sm-6">
-                                <input className="simple-input" type="text" value="" placeholder="Town/City" />
-                                <div className="empty-space col-xs-b20"></div>
-                            </div>
-                        </div>
-                        <div className="row m10">
-                            <div className="col-sm-6">
-                                <input className="simple-input" type="text" value="" placeholder="State/Country" />
-                                <div className="empty-space col-xs-b20"></div>
-                            </div>
-                            <div className="col-sm-6">
-                                <input className="simple-input" type="text" value="" placeholder="Postcode/ZIP" />
-                                <div className="empty-space col-xs-b20"></div>
-                            </div>
-                        </div>
-                        <div className="row m10">
-                            <div className="col-sm-6">
-                                <input className="simple-input" type="text" value="" placeholder="Email" />
-                                <div className="empty-space col-xs-b20"></div>
-                            </div>
-                            <div className="col-sm-6">
-                                <input className="simple-input" type="text" value="" placeholder="Phone" />
-                                <div className="empty-space col-xs-b20"></div>
-                            </div>
-                        </div>
-                        <label className="checkbox-entry">
-                            <input type="checkbox" checked /><span>Privacy policy agreement</span>
-                        </label>
-                        <div className="empty-space col-xs-b50"></div>
-                        <label className="checkbox-entry checkbox-toggle-title">
-                            <input type="checkbox" /><span>ship to different address?</span>
-                        </label>
-                        <div className="checkbox-toggle-wrapper">
-                            <div className="empty-space col-xs-b25"></div>
-                            <select className="SlectBox">
-                                <option disabled="disabled" >Choose country</option>
-                                <option value="volvo">Volvo</option>
-                                <option value="saab">Saab</option>
-                                <option value="mercedes">Mercedes</option>
-                                <option value="audi">Audi</option>
-                            </select>
-                            <div className="empty-space col-xs-b20"></div>
-                            <div className="row m10">
-                                <div className="col-sm-6">
-                                    <input className="simple-input" type="text" value="" placeholder="First name" />
-                                    <div className="empty-space col-xs-b20"></div>
-                                </div>
-                                <div className="col-sm-6">
-                                    <input className="simple-input" type="text" value="" placeholder="Last name" />
-                                    <div className="empty-space col-xs-b20"></div>
-                                </div>
-                            </div>
-                            <input className="simple-input" type="text" value="" placeholder="Company name" />
-                            <div className="empty-space col-xs-b20"></div>
-                            <input className="simple-input" type="text" value="" placeholder="Street address" />
-                            <div className="empty-space col-xs-b20"></div>
-                            <div className="row m10">
-                                <div className="col-sm-6">
-                                    <input className="simple-input" type="text" value="" placeholder="Appartment" />
-                                    <div className="empty-space col-xs-b20"></div>
-                                </div>
-                                <div className="col-sm-6">
-                                    <input className="simple-input" type="text" value="" placeholder="Town/City" />
-                                    <div className="empty-space col-xs-b20"></div>
-                                </div>
-                            </div>
-                            <div className="row m10">
-                                <div className="col-sm-6">
-                                    <input className="simple-input" type="text" value="" placeholder="State/Country" />
-                                    <div className="empty-space col-xs-b20"></div>
-                                </div>
-                                <div className="col-sm-6">
-                                    <input className="simple-input" type="text" value="" placeholder="Postcode/ZIP" />
-                                    <div className="empty-space col-xs-b20"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="empty-space col-xs-b30 col-sm-b60"></div>
-                        <textarea className="simple-input" placeholder="Note about your order"></textarea>
+                        <form onSubmit={handleSubmit}>
+            <div className="empty-space col-xs-b20"></div>
+            <div className="row m10">
+                <div className="col-sm-6">
+                    <input
+                        className="simple-input"
+                        type="text"
+                        name="full_name"
+                        value={formData.full_name}
+                        onChange={handleChange}
+                        placeholder="Full name"
+                    />
+                    {errors?.full_name ?
+                    <small className='text-danger'>{errors.full_name}</small>
+                :''
+                }
+                    <div className="empty-space col-xs-b20"></div>
+                </div>
+                <div className="col-sm-6">
+                    <input
+                        className="simple-input"
+                        type="text"
+                        name="phone_number"
+                        value={formData.phone_number}
+                        onChange={handleChange}
+                        placeholder="Phone number"
+                    />
+                     {errors?.phone_number?
+                    <small className='text-danger'>{errors.phone_number}</small>
+                :''
+                }
+                    <div className="empty-space col-xs-b20"></div>
+                </div>
+            </div>
+            <input
+                className="simple-input"
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                placeholder="Address"
+            />
+             {errors?.address?
+                    <small className='text-danger'>{errors.address}</small>
+                :''
+                }
+            <div className="empty-space col-xs-b20"></div>
+            <input
+                className="simple-input"
+                type="text"
+                name="address2"
+                value={formData.address2}
+                onChange={handleChange}
+                placeholder="Address 2"
+            />
+             {errors?.address2?
+                    <small className='text-danger'>{errors.address2}</small>
+                :''
+                }
+            <div className="empty-space col-xs-b20"></div>
+            <div className="row m10">
+                <div className="col-sm-6">
+                    <select
+                        className="form-controll"
+                        name="country"
+                        value={formData.country}
+                        onChange={handleChange}
+                    >
+                        <option disabled value="">
+                            Choose country
+                        </option>
+                        <option value="pakistan">Pakistan</option>
+                    </select>
+                    {errors?.country?
+                    <small className='text-danger'>{errors.country}</small>
+                :''
+                }
+                </div>
+                <div className="col-sm-6">
+                    <select
+                        className="SlectBox"
+                        name="state"
+                        value={formData.state}
+                        onChange={handleChange}
+                    >
+                        <option disabled value="">
+                            Choose State
+                        </option>
+                        <option value="sindh">Sindh</option>
+                        <option value="balochistan">Balochistan</option>
+                        <option value="punjab">Punjab</option>
+                        <option value="kpk">KPK</option>
+                    </select>
+                    {errors?.state?
+                    <small className='text-danger'>{errors.state}</small>
+                :''
+                }
+                </div>
+            </div>
+            <div className="row m10">
+                <div className="col-sm-6">
+                    <input
+                        className="simple-input"
+                        type="text"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleChange}
+                        placeholder="City"
+                    />
+                     {errors?.city?
+                    <small className='text-danger'>{errors.city}</small>
+                :''
+                }
+                    <div className="empty-space col-xs-b20"></div>
+                </div>
+                <div className="col-sm-6">
+                    <input
+                        className="simple-input"
+                        type="text"
+                        name="zip_code"
+                        value={formData.zip_code}
+                        onChange={handleChange}
+                        placeholder="Postcode/ZIP"
+                    />
+                     {errors?.zip_code?
+                    <small className='text-danger'>{errors.zip_code}</small>
+                :''
+                }
+                    <div className="empty-space col-xs-b20"></div>
+                </div>
+            </div>
+           
+            <textarea
+                className="simple-input"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Note about your order"
+            ></textarea>
+              {errors?.message?
+                    <small className='text-danger'>{errors.message}</small>
+                :''
+                }
+           
+        </form>
                     </div>
                     <div className="col-md-6">
                         <h4 className="h4 col-xs-b25">your order</h4>
@@ -215,11 +307,11 @@ const Checkout = () => {
                         <div className="simple-article size-2">* Etiam mollis tristique mi ac ultrices. Morbi vel neque eget lacus sollicitudin facilisis. Lorem ipsum dolor sit amet semper ante vehicula ociis natoq.</div>
                         <div className="empty-space col-xs-b30"></div>
                         <div className="button block size-2 style-3">
-                            <span className="button-wrapper">
+                            <span className="button-wrapper" >
                                 <span className="icon"><img src="assets/img/icon-4.png" alt="" /></span>
                                 <span className="text">place order</span>
                             </span>
-                            <input type="submit" />
+                            <input type="submit" onClick={handleSubmit} />
                         </div>
                     </div>
                 </div>
