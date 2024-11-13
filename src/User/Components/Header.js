@@ -14,13 +14,14 @@ const Header = () => {
         sessionStorage.clear()
         setContext({
             ...context,
-            token: ''
+            token: '',
+            user: {}
         })
     }
 
     useEffect(() => {
         fetchCart();
-    }, []);
+    }, [context.token]);
 
 
 
@@ -32,82 +33,84 @@ const Header = () => {
                     <div className="content-margins">
                         <div className="row">
                             <div className="col-md-5 hidden-xs hidden-sm">
-                                <div className="entry"><b>contact us:</b> <a href="tel:+971 50 744 9905">+971 50 744 9905</a></div>
+                                <div className="entry"><b>contact us:</b> <a href="tel:+971 50 744 9905">{context.user.id} +971 50 744 9905</a></div>
                                 <div className="entry"><b>email:</b> <a href="mailto:bj.laptophub@gmail.com">bj.laptophub@gmail.com</a></div>
                             </div>
                             <div className="col-md-7 col-md-text-right">
-                                {/* <div className="entry language">
-                                <div className="title"><b>en</b></div>
-                                <div className="language-toggle header-toggle-animation">
-                                    <a href="index1.html">fr</a>
-                                    <a href="index1.html">ru</a>
-                                    <a href="index1.html">it</a>
-                                    <a href="index1.html">sp</a>
-                                </div>
-                            </div> */}
+                               
+                              {
+                                context.token ? 
+                                <>
                                 <div className="entry hidden-xs hidden-sm"><a href="#"><i className="fa fa-heart-o" aria-hidden="true"></i></a></div>
+
                                 <div className="entry hidden-xs hidden-sm cart">
-                                    <Link to="/shopping-cart">
-                                        {/* <b className="hidden-xs">Your bag</b> */}
-                                        <span className="cart-icon">
-                                            <i className="fa fa-shopping-bag" aria-hidden="true"></i>
-                                            <span className="cart-label">{context?.cart.length}</span>
-                                        </span>
-                                        <span className="cart-title hidden-xs">${calculateTotalPrice(context?.cart)}</span>
-                                    </Link>
-                                    <div className="cart-toggle hidden-xs hidden-sm">
-                                        <div className="cart-overflow">
-                                            {context?.cart.map((cart, i) => {
-                                                return (
-                                                    <div className="cart-entry clearfix" key={i}>
-                                                        <Link className="cart-entry-thumbnail" to={`/product/${cart.product.SKU}`}><img src={context?.storagePath + '/' + cart.product.image.path} width={85} height={85} alt="" /></Link>
-                                                        <div className="cart-entry-description">
-                                                            <table>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <div className="h6"><Link to={`/product/${cart.product.SKU}`}>{cart?.product?.title}</Link></div>
-                                                                            <div className="simple-article size-1">QUANTITY: {cart?.qty}</div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div className="simple-article size-3 grey">${cart?.product?.price}</div>
-                                                                            <div className="simple-article size-1">TOTAL: ${cart?.product?.price * cart?.qty}</div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div className="cart-color" style={{ color: "#eee" }}></div>
-                                                                        </td>
-                                                                        <td>
-                                                                            <div className="button-close" onClick={() => deleteCart(cart.id)}></div>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
+                                <Link to="/shopping-cart">
+                                    {/* <b className="hidden-xs">Your bag</b> */}
+                                    <span className="cart-icon">
+                                        <i className="fa fa-shopping-bag" aria-hidden="true"></i>
+                                        <span className="cart-label">{context?.cart.length}</span>
+                                    </span>
+                                    <span className="cart-title hidden-xs">${calculateTotalPrice(context?.cart)}</span>
+                                </Link>
+                                <div className="cart-toggle hidden-xs hidden-sm">
+                                    <div className="cart-overflow">
+                                        {context?.cart.map((cart, i) => {
+                                            return (
+                                                <div className="cart-entry clearfix" key={i}>
+                                                    <Link className="cart-entry-thumbnail" to={`/product/${cart.product.SKU}`}><img src={context?.storagePath + '/' + cart.product.image.path} width={85} height={85} alt="" /></Link>
+                                                    <div className="cart-entry-description">
+                                                        <table>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div className="h6"><Link to={`/product/${cart.product.SKU}`}>{cart?.product?.title}</Link></div>
+                                                                        <div className="simple-article size-1">QUANTITY: {cart?.qty}</div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div className="simple-article size-3 grey">${cart?.product?.price}</div>
+                                                                        <div className="simple-article size-1">TOTAL: ${cart?.product?.price * cart?.qty}</div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div className="cart-color" style={{ color: "#eee" }}></div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div className="button-close" onClick={() => deleteCart(cart.id)}></div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
 
-                                                            </table>
-                                                        </div>
+                                                        </table>
                                                     </div>
-                                                )
-                                            })}
-
-
-                                        </div>
-                                        <div className="empty-space col-xs-b40"></div>
-                                        <div className="row">
-                                            <div className="col-xs-6">
-                                                <div className="cell-view empty-space col-xs-b50">
-                                                    <div className="simple-article size-5 grey">TOTAL <span className="color">${calculateTotalPrice(context?.cart)}</span></div>
                                                 </div>
+                                            )
+                                        })}
+
+
+                                    </div>
+                                    <div className="empty-space col-xs-b40"></div>
+                                    <div className="row">
+                                        <div className="col-xs-6">
+                                            <div className="cell-view empty-space col-xs-b50">
+                                                <div className="simple-article size-5 grey">TOTAL <span className="color">${calculateTotalPrice(context?.cart)}</span></div>
                                             </div>
-                                            <div className="col-xs-6 text-right">
-                                                <Link className="button size-2 style-3" to="/checkout">
-                                                    <span className="button-wrapper">
-                                                        <span className="icon"><img src="assets/img/icon-4.png" alt="" /></span>
-                                                        <span className="text">proceed to checkout</span>
-                                                    </span>
-                                                </Link>
-                                            </div>
+                                        </div>
+                                        <div className="col-xs-6 text-right">
+                                            <Link className="button size-2 style-3" to="/checkout">
+                                                <span className="button-wrapper">
+                                                    <span className="icon"><img src="assets/img/icon-4.png" alt="" /></span>
+                                                    <span className="text">proceed to checkout</span>
+                                                </span>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            </>
+
+                                :
+                                ''
+                              }
+                               
                                 {context?.token ?
                                     <div className="entry">
                                         <a href='javascript:;' onClick={() => logout()}><b>logout</b></a>

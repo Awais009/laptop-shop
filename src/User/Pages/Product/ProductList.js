@@ -8,7 +8,7 @@ import { DataContext } from '../../Context';
 
 const ProductList = () => {
 
-    const {addCart} = useContext(DataContext)
+    const {context, addCart} = useContext(DataContext)
     let location = useLocation();
     const { nav, nav_item } = useParams(); 
 
@@ -19,7 +19,6 @@ const ProductList = () => {
     const apiUrl = process.env.REACT_APP_API_URL; // Or use a config file
 
     useEffect(() => {
-        console.log('nav:' + nav + " / " + 'nav_item:' + nav_item)
 
         const fetchData = async () => {
             try {
@@ -98,7 +97,7 @@ const ProductList = () => {
                                         <div className="col-sm-4" key={product.id}>
                                             <div className="product-shortcode style-1">
                                                 <div className="title">
-                                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">SMART PHONES</a></div>
+                                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">{product.navigation_item?.title}</a></div>
                                                     <div className="h6 animate-to-green"><Link to={`/product/${product.SKU}`}>{product.title}</Link></div>
                                                 </div>
                                                 <div className="preview">

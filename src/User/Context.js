@@ -17,7 +17,7 @@ export const Context = ({ children }) => {
       try {
         const response = await axios.get(`http://localhost/laptop-backend/api/cart/carts`, {
           headers: {
-            Authorization: `Bearer 3|BW05sBS54RQekpRWwRaljHwymjD5gQzKnvGJYrr230b926e7`,
+            Authorization: `Bearer ${context.token}`,
           },
         });
 
@@ -61,7 +61,7 @@ export const Context = ({ children }) => {
               },
               {
                   headers: {
-                      Authorization: `Bearer 3|BW05sBS54RQekpRWwRaljHwymjD5gQzKnvGJYrr230b926e7`,
+                      Authorization: `Bearer ${context.token}`,
                   },
               }
           );
@@ -100,7 +100,7 @@ export const Context = ({ children }) => {
         try {
           await axios.delete(`http://localhost/laptop-backend/api/cart/carts/${id}`, {
             headers: {
-              Authorization: `Bearer 3|BW05sBS54RQekpRWwRaljHwymjD5gQzKnvGJYrr230b926e7`,
+              Authorization: `Bearer ${context.token}`,
             },
           });
     

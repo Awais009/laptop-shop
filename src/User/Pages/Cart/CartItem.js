@@ -22,7 +22,7 @@ const CartItem = ({ setTotalPrice }) => {
         { qty },
         {
           headers: {
-            Authorization: `Bearer 3|BW05sBS54RQekpRWwRaljHwymjD5gQzKnvGJYrr230b926e7`,
+            Authorization: `Bearer ${context.token}`,
           },
         }
       );
