@@ -5,8 +5,9 @@ import { DataContext } from '../Context';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 const Checkout = () => {
-    const { context,setContext, deleteCart } = useContext(DataContext);
-    const [ errors, setErrors ] = useState([]);
+    const { context, setContext, deleteCart } = useContext(DataContext);
+    const [errors, setErrors] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const calculateTotalPrice = (updatedCarts) => {
         return updatedCarts.reduce((sum, cart) => sum + cart.product.price * cart.qty, 0);
@@ -32,35 +33,30 @@ const Checkout = () => {
         }));
     };
 
-    const handleSubmit = async  (e) => {
-        e.preventDefault();
-        setErrors([])
-        try {
-            const response = await axios.post("http://localhost/laptop-backend/api/checkout", formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${context.token}`,
-                    },
-                }
-            );
-            toast.success(response.data.message);
-            console.log(response);
-            setContext({
-                ...context,
-                cart:[]
-            })
-            
-        } catch (error) {
-            console.log(error);
-            
-            if (error.response) {
-                toast.error(`Error: ${error.response.data.message}`);
-                setErrors(error.response.data.errors)
-            } else {
-                toast.error("Something went wrong. Please try again.");
-            }
-        } 
-    };
+   const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (loading) return toast.error('Processing...', { toastId: "loading" });
+
+    setLoading(true);
+    const toastId = toast.loading('Submitting...', { toastId: "login_toast", autoClose: false });
+    setErrors([]);
+
+    try {
+        const { data } = await axios.post("http://localhost/laptop-backend/api/checkout", formData, {
+            headers: { Authorization: `Bearer ${context.token}` },
+        });
+
+        toast.update(toastId, { render: data.message, type: 'success', isLoading: false, autoClose: true });
+        setContext({ ...context, cart: [] });
+    } catch (error) {
+        const message = error.response?.data?.message || "Something went wrong. Please try again.";
+        toast.update(toastId, { render: `Error: ${message}`, type: 'error', isLoading: false, autoClose: true });
+        setErrors(error.response?.data?.errors || []);
+    } finally {
+        setLoading(false);
+    }
+};
+
 
     return (
         <>
@@ -85,150 +81,150 @@ const Checkout = () => {
                     <div className="col-md-6 col-xs-b50 col-md-b0">
                         <h4 className="h4 col-xs-b25">billing details</h4>
                         <form onSubmit={handleSubmit}>
-            <div className="empty-space col-xs-b20"></div>
-            <div className="row m10">
-                <div className="col-sm-6">
-                    <input
-                        className="simple-input"
-                        type="text"
-                        name="full_name"
-                        value={formData.full_name}
-                        onChange={handleChange}
-                        placeholder="Full name"
-                    />
-                    {errors?.full_name ?
-                    <small className='text-danger'>{errors.full_name}</small>
-                :''
-                }
-                    <div className="empty-space col-xs-b20"></div>
-                </div>
-                <div className="col-sm-6">
-                    <input
-                        className="simple-input"
-                        type="text"
-                        name="phone_number"
-                        value={formData.phone_number}
-                        onChange={handleChange}
-                        placeholder="Phone number"
-                    />
-                     {errors?.phone_number?
-                    <small className='text-danger'>{errors.phone_number}</small>
-                :''
-                }
-                    <div className="empty-space col-xs-b20"></div>
-                </div>
-            </div>
-            <input
-                className="simple-input"
-                type="text"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                placeholder="Address"
-            />
-             {errors?.address?
-                    <small className='text-danger'>{errors.address}</small>
-                :''
-                }
-            <div className="empty-space col-xs-b20"></div>
-            <input
-                className="simple-input"
-                type="text"
-                name="address2"
-                value={formData.address2}
-                onChange={handleChange}
-                placeholder="Address 2"
-            />
-             {errors?.address2?
-                    <small className='text-danger'>{errors.address2}</small>
-                :''
-                }
-            <div className="empty-space col-xs-b20"></div>
-            <div className="row m10">
-                <div className="col-sm-6">
-                    <select
-                        className="form-controll"
-                        name="country"
-                        value={formData.country}
-                        onChange={handleChange}
-                    >
-                        <option disabled value="">
-                            Choose country
-                        </option>
-                        <option value="pakistan">Pakistan</option>
-                    </select>
-                    {errors?.country?
-                    <small className='text-danger'>{errors.country}</small>
-                :''
-                }
-                </div>
-                <div className="col-sm-6">
-                    <select
-                        className="SlectBox"
-                        name="state"
-                        value={formData.state}
-                        onChange={handleChange}
-                    >
-                        <option disabled value="">
-                            Choose State
-                        </option>
-                        <option value="sindh">Sindh</option>
-                        <option value="balochistan">Balochistan</option>
-                        <option value="punjab">Punjab</option>
-                        <option value="kpk">KPK</option>
-                    </select>
-                    {errors?.state?
-                    <small className='text-danger'>{errors.state}</small>
-                :''
-                }
-                </div>
-            </div>
-            <div className="row m10">
-                <div className="col-sm-6">
-                    <input
-                        className="simple-input"
-                        type="text"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        placeholder="City"
-                    />
-                     {errors?.city?
-                    <small className='text-danger'>{errors.city}</small>
-                :''
-                }
-                    <div className="empty-space col-xs-b20"></div>
-                </div>
-                <div className="col-sm-6">
-                    <input
-                        className="simple-input"
-                        type="text"
-                        name="zip_code"
-                        value={formData.zip_code}
-                        onChange={handleChange}
-                        placeholder="Postcode/ZIP"
-                    />
-                     {errors?.zip_code?
-                    <small className='text-danger'>{errors.zip_code}</small>
-                :''
-                }
-                    <div className="empty-space col-xs-b20"></div>
-                </div>
-            </div>
-           
-            <textarea
-                className="simple-input"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Note about your order"
-            ></textarea>
-              {errors?.message?
-                    <small className='text-danger'>{errors.message}</small>
-                :''
-                }
-           
-        </form>
+                            <div className="empty-space col-xs-b20"></div>
+                            <div className="row m10">
+                                <div className="col-sm-6">
+                                    <input
+                                        className="simple-input"
+                                        type="text"
+                                        name="full_name"
+                                        value={formData.full_name}
+                                        onChange={handleChange}
+                                        placeholder="Full name"
+                                    />
+                                    {errors?.full_name ?
+                                        <small className='text-danger'>{errors.full_name}</small>
+                                        : ''
+                                    }
+                                    <div className="empty-space col-xs-b20"></div>
+                                </div>
+                                <div className="col-sm-6">
+                                    <input
+                                        className="simple-input"
+                                        type="text"
+                                        name="phone_number"
+                                        value={formData.phone_number}
+                                        onChange={handleChange}
+                                        placeholder="Phone number"
+                                    />
+                                    {errors?.phone_number ?
+                                        <small className='text-danger'>{errors.phone_number}</small>
+                                        : ''
+                                    }
+                                    <div className="empty-space col-xs-b20"></div>
+                                </div>
+                            </div>
+                            <input
+                                className="simple-input"
+                                type="text"
+                                name="address"
+                                value={formData.address}
+                                onChange={handleChange}
+                                placeholder="Address"
+                            />
+                            {errors?.address ?
+                                <small className='text-danger'>{errors.address}</small>
+                                : ''
+                            }
+                            <div className="empty-space col-xs-b20"></div>
+                            <input
+                                className="simple-input"
+                                type="text"
+                                name="address2"
+                                value={formData.address2}
+                                onChange={handleChange}
+                                placeholder="Address 2"
+                            />
+                            {errors?.address2 ?
+                                <small className='text-danger'>{errors.address2}</small>
+                                : ''
+                            }
+                            <div className="empty-space col-xs-b20"></div>
+                            <div className="row m10">
+                                <div className="col-sm-6">
+                                    <select
+                                        className="form-controll"
+                                        name="country"
+                                        value={formData.country}
+                                        onChange={handleChange}
+                                    >
+                                        <option disabled value="">
+                                            Choose country
+                                        </option>
+                                        <option value="pakistan">Pakistan</option>
+                                    </select>
+                                    {errors?.country ?
+                                        <small className='text-danger'>{errors.country}</small>
+                                        : ''
+                                    }
+                                </div>
+                                <div className="col-sm-6">
+                                    <select
+                                        className="SlectBox"
+                                        name="state"
+                                        value={formData.state}
+                                        onChange={handleChange}
+                                    >
+                                        <option disabled value="">
+                                            Choose State
+                                        </option>
+                                        <option value="sindh">Sindh</option>
+                                        <option value="balochistan">Balochistan</option>
+                                        <option value="punjab">Punjab</option>
+                                        <option value="kpk">KPK</option>
+                                    </select>
+                                    {errors?.state ?
+                                        <small className='text-danger'>{errors.state}</small>
+                                        : ''
+                                    }
+                                </div>
+                            </div>
+                            <div className="row m10">
+                                <div className="col-sm-6">
+                                    <input
+                                        className="simple-input"
+                                        type="text"
+                                        name="city"
+                                        value={formData.city}
+                                        onChange={handleChange}
+                                        placeholder="City"
+                                    />
+                                    {errors?.city ?
+                                        <small className='text-danger'>{errors.city}</small>
+                                        : ''
+                                    }
+                                    <div className="empty-space col-xs-b20"></div>
+                                </div>
+                                <div className="col-sm-6">
+                                    <input
+                                        className="simple-input"
+                                        type="text"
+                                        name="zip_code"
+                                        value={formData.zip_code}
+                                        onChange={handleChange}
+                                        placeholder="Postcode/ZIP"
+                                    />
+                                    {errors?.zip_code ?
+                                        <small className='text-danger'>{errors.zip_code}</small>
+                                        : ''
+                                    }
+                                    <div className="empty-space col-xs-b20"></div>
+                                </div>
+                            </div>
+
+                            <textarea
+                                className="simple-input"
+                                name="message"
+                                value={formData.message}
+                                onChange={handleChange}
+                                placeholder="Note about your order"
+                            ></textarea>
+                            {errors?.message ?
+                                <small className='text-danger'>{errors.message}</small>
+                                : ''
+                            }
+
+                        </form>
                     </div>
                     <div className="col-md-6">
                         <h4 className="h4 col-xs-b25">your order</h4>

@@ -14,7 +14,9 @@ const UserLayout = () => {
     <>
     <Context>
       <Header />
-    <ToastContainer />
+    <ToastContainer 
+    autoClose={2000}
+    />
       <ScrollToTop />
       <Outlet />
         <Footer />

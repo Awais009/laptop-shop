@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from "react-router-dom";
 import { DataContext } from '../Context';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 const Header = () => {
 
     const { context, setContext, fetchCart, deleteCart } = useContext(DataContext);
@@ -10,13 +11,26 @@ const Header = () => {
         return updatedCarts.reduce((sum, cart) => sum + cart.product.price * cart.qty, 0);
     };
 
-    const logout = () => {
-        sessionStorage.clear()
-        setContext({
-            ...context,
-            token: '',
-            user: {}
-        })
+    const logout = async () => {
+
+        try {
+            const response = await axios.post("http://localhost/laptop-backend/api/logout", null, {
+                headers: { Authorization: `Bearer ${context.token}` },
+            });
+            
+            sessionStorage.clear()
+            setContext({
+                ...context,
+                token: '',
+                user: {}
+            })
+            toast.success(response.data.message || "Logged out successfully.");
+            
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Logout failed. Please try again.");
+        }
+
+       
     }
 
     useEffect(() => {
