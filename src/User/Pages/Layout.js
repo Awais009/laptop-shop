@@ -5,6 +5,8 @@ import Footer from "../Components/Footer";
 import ScrollToTop from "../Components/ScrollToTop";
 import { Outlet } from "react-router-dom";
 import { Context } from '../Context';
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UserLayout = () => {
 
@@ -12,6 +14,9 @@ const UserLayout = () => {
     <>
     <Context>
       <Header />
+    <ToastContainer 
+    autoClose={2000}
+    />
       <ScrollToTop />
       <Outlet />
         <Footer />

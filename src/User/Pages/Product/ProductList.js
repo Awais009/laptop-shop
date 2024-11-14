@@ -8,50 +8,58 @@ import { DataContext } from '../../Context';
 
 const ProductList = () => {
 
-    const {context, addCart} = useContext(DataContext)
-    let location = useLocation();
-    const { nav, nav_item } = useParams(); 
-
+    const { context, addCart } = useContext(DataContext);
+    const location = useLocation();
+    const { nav, nav_item } = useParams();
 
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [storagePath, setStoragePath] = useState('');
-    const apiUrl = process.env.REACT_APP_API_URL; // Or use a config file
+    const [storagePath, setStoragePath] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 1; // Number of products per page
+    const initialMinPrice = 40; // Define initial min price
+    const initialMaxPrice = 900; // Define initial max price
+    const [minPrice, setMinPrice] = useState(initialMinPrice);
+    const [maxPrice, setMaxPrice] = useState(initialMaxPrice);
+    const [activeView, setActiveView] = useState("inline");
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
-
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost/laptop-backend/api/products?nav=${nav || ''}&&nav_item=${nav_item || ''}`);
+                const response = await axios.get(`${apiUrl}/products?nav=${nav || ""}&nav_item=${nav_item || ""}`);
                 setProducts(response.data.products);
                 setCategories(response.data.categories);
                 setStoragePath(response.data.storagePath);
-                console.log(response.data)
-
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         };
-
         fetchData();
-    }, [location]);
+    }, [location, nav, nav_item, apiUrl]);
 
-   
-
-    const initialMinPrice = 40;
-    const initialMaxPrice = 900;
-    const [minPrice, setMinPrice] = useState(initialMinPrice);
-    const [maxPrice, setMaxPrice] = useState(initialMaxPrice);
-    const handleSliderChange = (values) => {
-        setMinPrice(values[0]);
-        setMaxPrice(values[1]);
+    const handleSliderChange = ([min, max]) => {
+        setMinPrice(min);
+        setMaxPrice(max);
     };
 
+    const handleToggle = (view) => view !== activeView && setActiveView(view);
 
-    const [activeView, setActiveView] = useState('inline');
-    const handleToggle = (view) => {
-        if (activeView === view) return;
-        setActiveView(view);
+    const totalPages = Math.ceil(products.length / productsPerPage);
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  
+    const handlePageChange = (pageNumber) => {
+      setCurrentPage(pageNumber);
+    };
+  
+    const handlePrevPage = () => {
+      if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
+  
+    const handleNextPage = () => {
+      if (currentPage < totalPages) setCurrentPage(currentPage + 1);
     };
     return (
         <>
@@ -76,7 +84,7 @@ const ProductList = () => {
                             <img src="assets/img/icon-16.png" alt="" />
                             <img src="assets/img/icon-17.png" alt="" />
                         </a>
-                       
+
                         <div className="align-inline spacing-1 filtration-cell-width-2">
                             <select className="SlectBox small">
                                 <option disabled="disabled"  >Show 30</option>
@@ -93,7 +101,7 @@ const ProductList = () => {
                         <div className={`products-content ${activeView === 'inline' ? 'view-inline' : ''}`}>
                             <div className="products-wrapper">
                                 <div className="row nopadding">
-                                    {products ? products.map((product, i) => (
+                                    { currentProducts?.map((product, i) => (
                                         <div className="col-sm-4" key={product.id}>
                                             <div className="product-shortcode style-1">
                                                 <div className="title">
@@ -101,7 +109,7 @@ const ProductList = () => {
                                                     <div className="h6 animate-to-green"><Link to={`/product/${product.SKU}`}>{product.title}</Link></div>
                                                 </div>
                                                 <div className="preview">
-                                                    <img src={`${storagePath}/${product.image.path}`} style={{height:'170px'}} alt="producImage"  />
+                                                    <img src={`${storagePath}/${product.image.path}`} style={{ height: '170px' }} alt="producImage" />
                                                     <div className="preview-buttons valign-middle">
                                                         <div className="valign-middle-content">
                                                             <Link className="button size-2 style-2" to={`/product/${product.SKU}`}>
@@ -110,7 +118,7 @@ const ProductList = () => {
                                                                     <span className="text">Learn More</span>
                                                                 </span>
                                                             </Link>
-                                                            <a className="button size-2 style-3" href="javascript:" onClick={() => addCart({product_id : product.id}) }>
+                                                            <a className="button size-2 style-3" href="javascript:" onClick={() => addCart({ product_id: product.id })}>
                                                                 <span className="button-wrapper">
                                                                     <span className="icon"><img src="assets/img/icon-3.png" alt="" /></span>
                                                                     <span className="text">Add To Cart</span>
@@ -120,7 +128,7 @@ const ProductList = () => {
                                                     </div>
                                                 </div>
                                                 <div className="price">
-                                                   
+
                                                     <div className="simple-article size-4"><span className="color">${product.price}</span>&nbsp;&nbsp;&nbsp;<span className="line-through">$350.00</span></div>
                                                 </div>
                                                 <div className="description">
@@ -132,7 +140,7 @@ const ProductList = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    )) : ''
+                                    )) 
 
                                     }
 
@@ -143,7 +151,7 @@ const ProductList = () => {
                         <div className="empty-space col-xs-b35 col-sm-b0"></div>
                         <div className="row">
                             <div className="col-sm-3 hidden-xs">
-                                <a className="button size-1 style-5" href="#">
+                                <a className="button size-1 style-5" href="javascript:;" onClick={handlePrevPage} disabled={currentPage === 1}>
                                     <span className="button-wrapper">
                                         <span className="icon"><i className="fa fa-angle-left" aria-hidden="true"></i></span>
                                         <span className="text">prev page</span>
@@ -152,19 +160,23 @@ const ProductList = () => {
                             </div>
                             <div className="col-sm-6 text-center">
                                 <div className="pagination-wrapper">
-                                    <a className="pagination active">1</a>
-                                    <a className="pagination">2</a>
-                                    <a className="pagination">3</a>
-                                    <a className="pagination">4</a>
-                                    <span className="pagination">...</span>
-                                    <a className="pagination">23</a>
+                                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <a
+                key={page}
+                className={`pagination ${currentPage === page ? "active" : ""}`}
+                onClick={() => handlePageChange(page)}
+              >
+                {page}
+              </a>
+            ))}
+                                    
                                 </div>
                             </div>
                             <div className="col-sm-3 hidden-xs text-right">
-                                <a className="button size-1 style-5" href="#">
+                                <a className="button size-1 style-5" href="javascript:;" onClick={handleNextPage} disabled={currentPage === totalPages}>
                                     <span className="button-wrapper">
                                         <span className="icon"><i className="fa fa-angle-right" aria-hidden="true"></i></span>
-                                        <span className="text">prev page</span>
+                                        <span className="text">next page</span>
                                     </span>
                                 </a>
                             </div>
@@ -184,9 +196,10 @@ const ProductList = () => {
                                 max={initialMaxPrice}
                                 step={5}
                                 onChange={handleSliderChange}
-                                renderTrack={(props, state) => <div {...props} className="track" />}
+                                renderTrack={(props) => <div {...props} className="track" />}
                                 renderThumb={(props) => <div {...props} className="thumb" />}
                             />
+
                         </div>
 
                         <div className="simple-article size-1">
@@ -196,28 +209,28 @@ const ProductList = () => {
                         <div className="empty-space col-xs-b25 col-sm-b50"></div>
 
                         {categories && categories.map((category, i) => (
-    <React.Fragment key={i}>
-        {i > 0 && <div className="empty-space col-xs-b25 col-sm-b50"></div>}
-        
-        <div className="h4 col-xs-b25">{category.title}</div>
+                            <React.Fragment key={i}>
+                                {i > 0 && <div className="empty-space col-xs-b25 col-sm-b50"></div>}
 
-        {category.sub_categories && category.sub_categories.map((sub_category, j) => (
-            <React.Fragment key={j}>
-                {j > 0 && <div className="empty-space col-xs-b10"></div>}
-                
-                <label className="checkbox-entry">
-                    <input type="checkbox" /><span>{sub_category.title}</span>
-                </label>
-            </React.Fragment>
-        ))}
-    </React.Fragment>
-))}
+                                <div className="h4 col-xs-b25">{category.title}</div>
+
+                                {category.sub_categories && category.sub_categories.map((sub_category, j) => (
+                                    <React.Fragment key={j}>
+                                        {j > 0 && <div className="empty-space col-xs-b10"></div>}
+
+                                        <label className="checkbox-entry">
+                                            <input type="checkbox" /><span>{sub_category.title}</span>
+                                        </label>
+                                    </React.Fragment>
+                                ))}
+                            </React.Fragment>
+                        ))}
 
 
 
                     </div>
                 </div>
-                
+
             </div>
 
         </>
