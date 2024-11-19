@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { DataContext } from '../Context';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const Checkout = () => {
     const { context, setContext, deleteCart } = useContext(DataContext);
     const [errors, setErrors] = useState([]);
@@ -42,7 +44,7 @@ const Checkout = () => {
     setErrors([]);
 
     try {
-        const { data } = await axios.post("http://localhost/laptop-backend/api/checkout", formData, {
+        const { data } = await axios.post(`${apiUrl}/checkout`, formData, {
             headers: { Authorization: `Bearer ${context.token}` },
         });
 

@@ -6,7 +6,7 @@ import { DataContext } from '../../Context';
 import $ from 'jquery';
 
 const ProductDetail = () => {
-    const {addCart} =  useContext(DataContext);
+    const { addCart, context } = useContext(DataContext);
     let location = useLocation();
     const { SKU } = useParams(); // Get the ID from the URL
     const [product, setProduct] = useState([]);
@@ -18,7 +18,7 @@ const ProductDetail = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost/laptop-backend/api/product-detail/${SKU}`);
+                const response = await axios.get(`${apiUrl}/product-detail/${SKU}`);
                 setProduct(response.data.product);
                 setNavigations(response.data.navigations);
                 setStoragePath(response.data.storagePath);
@@ -27,7 +27,7 @@ const ProductDetail = () => {
                     let winW = $(window).width();
                     let winH = $(window).height();
                     let headerH = $('.header-empty-space').height();
-                    $('.page-height').css({'height':(winH-headerH<=500)?500:(winH-headerH)});
+                    $('.page-height').css({ 'height': (winH - headerH <= 500) ? 500 : (winH - headerH) });
                 }, 500);
 
             } catch (error) {
@@ -61,13 +61,15 @@ const ProductDetail = () => {
                                     <div className="swiper-container swiper-control-top">
                                         <div className="swiper-wrapper">
 
-                                            {  product.images && product.images.map((image,i)=>(
-                                            <div className="swiper-slide">
-                                                <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-4.png"></div>
-                                            </div>
-                                           
+                                            {product.images && product.images.map((image, i) => (
+                                                <div className="swiper-slide" key={i}>
+                                                    <div
+                                                        className="product-big-preview-entry swiper-lazy"
+                                                        data-background={`${storagePath}/${image.path}`}
+                                                    ></div>
+                                                </div>
+                                            ))}
 
-                                             ))  } 
 
                                             {/* <div className="swiper-slide">
                                                 <div className="product-big-preview-entry " data-background="assets/img/product-4.png"></div>
@@ -135,17 +137,17 @@ const ProductDetail = () => {
                                         <div className="h6 detail-data-title size-1">quantity:</div>
                                     </div>
                                     <div className="col-sm-9">
-                                    <div className="quantity-select">
-  <span className="minus" onClick={() => setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1))}></span>
-  <span className="number">{quantity}</span>
-  <span className="plus" onClick={() => setQuantity((prevQuantity) => prevQuantity + 1)}></span>
-</div>
+                                        <div className="quantity-select">
+                                            <span className="minus" onClick={() => setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1))}></span>
+                                            <span className="number">{quantity}</span>
+                                            <span className="plus" onClick={() => setQuantity((prevQuantity) => prevQuantity + 1)}></span>
+                                        </div>
 
                                     </div>
                                 </div>
                                 <div className="row m5 col-xs-b40">
                                     <div className="col-sm-6 col-xs-b10 col-sm-b0">
-                                        <Link className="button size-2 style-2 block" onClick={() => addCart({product_id : product.id, qty:quantity})}>
+                                        <Link className="button size-2 style-2 block" onClick={() => addCart({ product_id: product.id, qty: quantity })}>
                                             <span className="button-wrapper" >
                                                 <span className="icon"><img src="assets/img/icon-2.png" alt="" /></span>
                                                 <span className="text"  >add to cart</span>
@@ -276,30 +278,30 @@ const ProductDetail = () => {
                 <div className="empty-space col-md-b70"></div>
 
                 <div className="row">
-                            {navigations?.map((navigation)=>(
-                                navigation.products.length > 0 &&
-                                 <div className="col-sm-6 col-md-3 col-xs-b25">
-                                 <div className="h4 col-xs-b25">{navigation.title}</div>
-                                 {navigation.products?.map((product)=>(
-                                    <>
-                                     <div className="col-xs-b10"></div>
-                                  <div className="product-shortcode style-4 rounded clearfix">
-                                      <Link className="preview" to={"/product/"+product.SKU}><img src={storagePath+"/"+product.image.path} alt="" /></Link>
-                                      <div className="description">
-                                          <div className="simple-article color size-1 col-xs-b5">{navigation.title}</div>
-                                          <h6 className="h6 col-xs-b10"><Link to={"/product/"+product.SKU}>{product.title}</Link></h6>
-                                          <div className="simple-article dark">${product.price}</div>
-                                      </div>
-                                  </div>
-                                    </>
-                                    
-                                 ))}
-                                
-                                
-                             </div>
+                    {navigations?.map((navigation) => (
+                        navigation.products.length > 0 &&
+                        <div className="col-sm-6 col-md-3 col-xs-b25">
+                            <div className="h4 col-xs-b25">{navigation.title}</div>
+                            {navigation.products?.map((product) => (
+                                <>
+                                    <div className="col-xs-b10"></div>
+                                    <div className="product-shortcode style-4 rounded clearfix">
+                                        <Link className="preview" to={"/product/" + product.SKU}><img src={storagePath + "/" + product.image.path} alt="" /></Link>
+                                        <div className="description">
+                                            <div className="simple-article color size-1 col-xs-b5">{navigation.title}</div>
+                                            <h6 className="h6 col-xs-b10"><Link to={"/product/" + product.SKU}>{product.title}</Link></h6>
+                                            <div className="simple-article dark">${product.price}</div>
+                                        </div>
+                                    </div>
+                                </>
+
                             ))}
-                   
-                   
+
+
+                        </div>
+                    ))}
+
+
                 </div>
 
             </div>

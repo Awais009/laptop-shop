@@ -6,7 +6,7 @@ import Login from './login';
 
 const Footer = (SKU) => {
     const { context, addCart } = useContext(DataContext);
-    const [quantity, setQuantity] = useState('');
+    const [quantity, setQuantity] = useState(1);
    
 
     return (
@@ -138,32 +138,13 @@ const Footer = (SKU) => {
                                             <div className="swiper-button-prev hidden"></div>
                                             <div className="swiper-button-next hidden"></div>
                                             <div className="swiper-wrapper">
-                                                {/* {context.product?.images?.map((image) => (
+                                                {context.product?.images?.map((image) => (
                                                     <div className="swiper-slide" key={image.id}>
                                                         <div className="swiper-lazy-preloader"></div>
-                                                        <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-preview-4.jpg"></div>
+                                                        <div className="product-big-preview-entry swiper-lazy" data-background={`${context.storagePath}/${image.path}`}></div>
                                                     </div>
-                                                ))} */}
-                                                <div className="swiper-slide" >
-                                                    <div className="swiper-lazy-preloader"></div>
-                                                    <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-preview-4.jpg"></div>
-                                                </div>
-                                                <div className="swiper-slide" >
-                                                    <div className="swiper-lazy-preloader"></div>
-                                                    <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-preview-4.jpg"></div>
-                                                </div>
-                                                <div className="swiper-slide" >
-                                                    <div className="swiper-lazy-preloader"></div>
-                                                    <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-preview-4.jpg"></div>
-                                                </div>
-                                                <div className="swiper-slide" >
-                                                    <div className="swiper-lazy-preloader"></div>
-                                                    <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-preview-4.jpg"></div>
-                                                </div>
-                                                <div className="swiper-slide" >
-                                                    <div className="swiper-lazy-preloader"></div>
-                                                    <div className="product-big-preview-entry swiper-lazy" data-background="assets/img/product-preview-4.jpg"></div>
-                                                </div>
+                                                ))}
+                                               
 
                                             </div>
                                         </div>
@@ -174,43 +155,14 @@ const Footer = (SKU) => {
                                             <div className="swiper-button-prev hidden"></div>
                                             <div className="swiper-button-next hidden"></div>
                                             <div className="swiper-wrapper">
-                                                {/* {context.product?.images?.map((image)=>(
+                                                {context.product?.images?.map((image)=>(
                                                 <div className="swiper-slide">
                                                     <div className="product-small-preview-entry">
-                                                        <img src="assets/img/product-preview-4_.jpg" alt="" />
+                                                        <img src={context.storagePath+'/'+image.path} alt="" />
                                                     </div>
                                                 </div>
-                                                  ))} */}
-                                                <div className="swiper-slide">
-                                                    <div className="product-small-preview-entry">
-                                                        <img src="assets/img/product-preview-5_.jpg" alt="" />
-                                                    </div>
-                                                </div>
-                                                <div className="swiper-slide">
-                                                    <div className="product-small-preview-entry">
-                                                        <img src="assets/img/product-preview-6_.jpg" alt="" />
-                                                    </div>
-                                                </div>
-                                                <div className="swiper-slide">
-                                                    <div className="product-small-preview-entry">
-                                                        <img src="assets/img/product-preview-7_.jpg" alt="" />
-                                                    </div>
-                                                </div>
-                                                <div className="swiper-slide">
-                                                    <div className="product-small-preview-entry">
-                                                        <img src="assets/img/product-preview-8_.jpg" alt="" />
-                                                    </div>
-                                                </div>
-                                                <div className="swiper-slide">
-                                                    <div className="product-small-preview-entry">
-                                                        <img src="assets/img/product-preview-9_.jpg" alt="" />
-                                                    </div>
-                                                </div>
-                                                <div className="swiper-slide">
-                                                    <div className="product-small-preview-entry">
-                                                        <img src="assets/img/product-preview-10_.jpg" alt="" />
-                                                    </div>
-                                                </div>
+                                                  ))}
+                                               
 
                                             </div>
                                         </div>
@@ -244,47 +196,18 @@ const Footer = (SKU) => {
                                         </div>
                                     </div>
                                     <div className="simple-article size-3 col-xs-b30">{context.product?.description}</div>
-                                    <div className="row col-xs-b40">
-                                        <div className="col-sm-3">
-                                            <div className="h6 detail-data-title size-1">size:</div>
-                                        </div>
-                                        <div className="col-sm-9">
-                                            <select className="SlectBox">
-                                                <option disabled="disabled" >Choose size</option>
-                                                <option value="volvo">Volvo</option>
-                                                <option value="saab">Saab</option>
-                                                <option value="mercedes">Mercedes</option>
-                                                <option value="audi">Audi</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="row col-xs-b40">
-                                        <div className="col-sm-3">
-                                            <div className="h6 detail-data-title">color:</div>
-                                        </div>
-                                        <div className="col-sm-9">
-                                            <div className="color-selection size-1">
-                                                <div className="entry active" style={{ color: "#a7f050" }}></div>
-                                                <div className="entry" style={{ color: "#50e3f0" }}></div>
-                                                <div className="entry" style={{ color: "#eee" }}></div>
-                                                <div className="entry" style={{ color: "#4d900c" }}></div>
-                                                <div className="entry" style={{ color: "#edb82c" }}></div>
-                                                <div className="entry" style={{ color: "#7d3f99" }}></div>
-                                                <div className="entry" style={{ color: "#3481c7" }}></div>
-                                                <div className="entry" style={{ color: "#bf584b" }}></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
+                                  
                                     <div className="row col-xs-b40">
                                         <div className="col-sm-3">
                                             <div className="h6 detail-data-title size-1">quantity:</div>
                                         </div>
                                         <div className="col-sm-9">
-                                            <div className="quantity-select">
-                                                <span className="minus" onClick={() => setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1))}></span>
-                                                <span className="number">{quantity}</span>
-                                                <span className="plus" onClick={() => setQuantity((prevQuantity) => prevQuantity + 1)}></span>
-                                            </div>
+                                        <div className="quantity-select">
+                                            <span className="minus" onClick={() => setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 1))}></span>
+                                            <span className="number">{quantity}</span>
+                                            <span className="plus" onClick={() => setQuantity((prevQuantity) => prevQuantity + 1)}></span>
+                                        </div>
                                         </div>
                                     </div>
                                     <div className="row m5 col-xs-b40">
@@ -305,20 +228,7 @@ const Footer = (SKU) => {
                                             </a>
                                         </div>
                                     </div>
-                                    <div className="row">
-                                        <div className="col-sm-3">
-                                            <div className="h6 detail-data-title size-2">share:</div>
-                                        </div>
-                                        <div className="col-sm-9">
-                                            <div className="follow light">
-                                                <a className="entry" href="#"><i className="fa fa-facebook"></i></a>
-                                                <a className="entry" href="#"><i className="fa fa-twitter"></i></a>
-                                                <a className="entry" href="#"><i className="fa fa-linkedin"></i></a>
-                                                <a className="entry" href="#"><i className="fa fa-google-plus"></i></a>
-                                                <a className="entry" href="#"><i className="fa fa-pinterest-p"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                  
                                 </div>
                             </div>
                         </div>

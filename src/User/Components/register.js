@@ -3,6 +3,8 @@ import { useContext, useState } from "react";
 import { DataContext } from "../Context";
 import $ from "jquery";
 import { toast } from "react-toastify";
+const apiUrl = process.env.REACT_APP_API_URL;
+
 
 const Register = () => {
     const [errors, setErrors] = useState([]);
@@ -22,7 +24,7 @@ const Register = () => {
         setErrors([]);
     
         try {
-            const { data } = await axios.post('http://localhost/laptop-backend/api/register', formData);
+            const { data } = await axios.post(`${apiUrl}/register`, formData);
             sessionStorage.setItem('token', data.token);
             sessionStorage.setItem('user', JSON.stringify(data.user));
             setContext((prev) => ({ ...prev, token: data.token, user: data.user }));

@@ -1,11 +1,14 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { DataContext } from '../../Context';
+import { Link } from "react-router-dom";
+
+const apiUrl = process.env.REACT_APP_API_URL;
+
 
 const CartItem = ({ setTotalPrice }) => {
   const { context, deleteCart , setContext } = useContext(DataContext);
   const [carts, setCarts] = useState([]);
-  const apiUrl = 'http://localhost/laptop-backend/api'; // Or use a config file
 
   useEffect(() => {
     setCarts(context?.cart);
@@ -51,12 +54,12 @@ const CartItem = ({ setTotalPrice }) => {
       {carts?.map((cart) => (
         <tr key={cart.id}>
           <td data-title=" ">
-            <a className="cart-entry-thumbnail" href="#">
+            <Link className="cart-entry-thumbnail" to={`/product/${cart.product.SKU}`}>
               <img src={`${context?.storagePath}/${cart.product.image?.path}`} width="85" height="85" alt="" />
-            </a>
+            </Link>
           </td>
           <td data-title=" ">
-            <h6 className="h6"><a href="#">{cart.product.title}</a></h6>
+            <h6 className="h6"><Link to={`/product/${cart.product.SKU}`}>{cart.product.title}</Link></h6>
           </td>
           <td data-title="Price: ">${cart.product.price}</td>
           <td data-title="Quantity: ">
