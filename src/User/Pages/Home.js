@@ -34,7 +34,7 @@ const Home = () => {
     fetchData();
   }, []);
 
-  const onProductDetail = () => {};
+  
 
   return (
     <>

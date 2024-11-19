@@ -8,7 +8,7 @@ import { DataContext } from '../../Context';
 
 const ProductList = () => {
 
-    const { context, addCart } = useContext(DataContext);
+    const { context, addCart, quickView } = useContext(DataContext);
     const location = useLocation();
     const { nav, nav_item } = useParams();
 
@@ -134,7 +134,7 @@ const ProductList = () => {
                                                 <div className="description">
                                                     <div className="simple-article text size-2">{product.description}</div>
                                                     <div className="icons">
-                                                        <a className="entry open-popup" data-rel="3"><i className="fa fa-eye" aria-hidden="true"></i></a>
+                                                        <a className="entry open-popup" data-rel="3" onClick={()=> quickView(product.SKU)}><i className="fa fa-eye" aria-hidden="true"></i></a>
                                                         <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
