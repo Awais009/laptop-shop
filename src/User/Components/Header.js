@@ -49,7 +49,10 @@ const Header = () => {
     }
 
     useEffect(() => {
-        fetchCart();
+        if(context.token){
+
+            fetchCart();
+        }
         fetchNavigations()
     }, [context.token]);
 
