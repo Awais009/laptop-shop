@@ -16,7 +16,7 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost/laptop-backend/api/home`);
+        const response = await axios.get(`${apiUrl}/home`);
         setData(response.data);
         setNavigations(response.data.navigations);
         setStoragePath(response.data.storagePath);
@@ -251,10 +251,10 @@ const Home = () => {
                         <div className="product-shortcode style-1">
                           <div className="title">
                             <div className="simple-article size-1 color col-xs-b5">
-                              <a href="#">{navigation.title}</a>
+                              <Link to={`product-list/${navigation.title}/${product.navigation_item.title}`}>{product.navigation_item.title}</Link>
                             </div>
                             <div className="h6 animate-to-green">
-                              <a href="#">{product.title}</a>
+                              <Link to={`product/${product.SKU}`}>{product.title}</Link>
                             </div>
                             <div className="discount-box">
                               <span>52%</span>
@@ -296,12 +296,7 @@ const Home = () => {
                               {product.description}
                             </div>
                             <div className="icons">
-                              <a className="entry">
-                                <i
-                                  className="fa fa-check"
-                                  aria-hidden="true"
-                                ></i>
-                              </a>
+                             
                               <a className="entry open-popup" data-rel="3" onClick={()=> quickView(product.SKU)} >
                                 <i className="fa fa-eye" aria-hidden="true"></i>
                               </a>

@@ -1,5 +1,8 @@
 import axios from 'axios';
 import React, { createContext, useState } from 'react'
+import { toast } from 'react-toastify';
+const apiUrl = process.env.REACT_APP_API_URL;
+
 
 export const DataContext = createContext("");
 export const Context = ({ children }) => {
@@ -15,7 +18,7 @@ export const Context = ({ children }) => {
 
     const fetchCart = async () => {
       try {
-        const response = await axios.get(`http://localhost/laptop-backend/api/cart/carts`, {
+        const response = await axios.get(`${apiUrl}/cart/carts`, {
           headers: {
             Authorization: `Bearer ${context.token}`,
           },
@@ -36,8 +39,9 @@ export const Context = ({ children }) => {
     };
 
     const quickView = async (SKU) => {
+
       try {
-          const response = await axios.get(`http://localhost/laptop-backend/api/quick-view/${SKU}`);
+          const response = await axios.get(`${apiUrl}/quick-view/${SKU}`);
           setContext({
             ...context,
             product: response.data.product,
@@ -45,15 +49,17 @@ export const Context = ({ children }) => {
           });
 
       } catch (error) {
-          console.error("Error fetching data:", error);
+        toast.error("error: "+error);
+
       }
   };
 
 
     const addCart = async (data) => {
+      const toastId = toast.loading('Submitting...');
       try {
           const response = await axios.post(
-              `http://localhost/laptop-backend/api/cart/carts`,
+              `${apiUrl}/cart/carts`,
               {
                   // Include relevant item details here
                   product_id: data.product_id, // or whatever your API expects
@@ -86,19 +92,18 @@ export const Context = ({ children }) => {
       ...prevContext,
       cart: updatedCarts,
     }));
+    toast.update(toastId, { render: data.message, type: 'success', isLoading: false, autoClose: true });
+
   }
 } catch (error) {
-  if (error.response?.data?.errors?.qty) {
-    console.error("Error response data:", error.response.data.errors['qty']);
-  } else {
-    console.error("Error message:", error.message);
-  }
+  const message = error.response?.data?.message || "An error occurred.";
+  toast.update(toastId, { render: `Error: ${message}`, type: 'error', isLoading: false, autoClose: true });
 }
 };
 
     const deleteCart = async (id) => {
         try {
-          await axios.delete(`http://localhost/laptop-backend/api/cart/carts/${id}`, {
+          await axios.delete(`${apiUrl}/cart/carts/${id}`, {
             headers: {
               Authorization: `Bearer ${context.token}`,
             },

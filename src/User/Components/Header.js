@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { DataContext } from '../Context';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const Header = () => {
 
     const { context, setContext, fetchCart, deleteCart } = useContext(DataContext);
@@ -15,7 +17,7 @@ const Header = () => {
     const logout = async () => {
 
         try {
-            const response = await axios.post("http://localhost/laptop-backend/api/logout", null, {
+            const response = await axios.post(`${apiUrl}/logout`, null, {
                 headers: { Authorization: `Bearer ${context.token}` },
             });
 
@@ -37,7 +39,7 @@ const Header = () => {
     const fetchNavigations = async () => {
 
         try {
-            const response = await axios.get("http://localhost/laptop-backend/api/navigations", {
+            const response = await axios.get(`${apiUrl}/navigations`, {
             });
             setNavigations(response.data.navigations)
 

@@ -17,11 +17,9 @@ const ProductList = () => {
     const [storagePath, setStoragePath] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 1; // Number of products per page
-    const initialMinPrice = 40; // Define initial min price
-    const initialMaxPrice = 900; // Define initial max price
-    const [minPrice, setMinPrice] = useState(initialMinPrice);
-    const [maxPrice, setMaxPrice] = useState(initialMaxPrice);
+    const [priceRange, setPriceRange] = useState([40, 900]);
     const [activeView, setActiveView] = useState("inline");
+    const [selectedSubCategories, setSelectedSubCategories] = useState([]);
     const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
@@ -38,29 +36,43 @@ const ProductList = () => {
         fetchData();
     }, [location, nav, nav_item, apiUrl]);
 
-    const handleSliderChange = ([min, max]) => {
-        setMinPrice(min);
-        setMaxPrice(max);
+    const handlePriceChange = ([min, max]) => {
+        setPriceRange([min, max]);
     };
+
+    const [minPrice, maxPrice] = priceRange; // Destructure from priceRange
 
     const handleToggle = (view) => view !== activeView && setActiveView(view);
 
-    const totalPages = Math.ceil(products.length / productsPerPage);
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
-  
-    const handlePageChange = (pageNumber) => {
-      setCurrentPage(pageNumber);
-    };
-  
     const handlePrevPage = () => {
-      if (currentPage > 1) setCurrentPage(currentPage - 1);
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
-  
+
     const handleNextPage = () => {
-      if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
     };
+
+    const handleSubCategoryChange = (e) => {
+        const checked = e.target.checked;
+        const value = e.target.value;
+
+        if (checked) {
+            setSelectedSubCategories((prev) => [...prev, value]);
+        } else {
+            setSelectedSubCategories((prev) => prev.filter((item) => item !== value));
+        }
+    };
+
+    const filteredProducts = products.filter((product) => {
+        const priceInRange = product.price >= priceRange[0] && product.price <= priceRange[1];
+        const subCategoryMatch = selectedSubCategories.length === 0 || selectedSubCategories.includes(product.sub_category_id);
+
+        return priceInRange && subCategoryMatch;
+    });
+
+    const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+    const currentPageProducts = filteredProducts.slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage);
+
     return (
         <>
 
@@ -74,7 +86,7 @@ const ProductList = () => {
                             <div className="h4">Sport gadgets</div>
                         </div>
                         <div className="align-inline spacing-1">
-                            <div className="simple-article size-1">SHOWING <b className="grey">15</b> OF <b className="grey">2 358</b> RESULTS</div>
+                            <div className="simple-article size-1">SHOWING <b className="grey">{productsPerPage * currentPage}</b> OF <b className="grey">{products.length}</b> RESULTS</div>
                         </div>
                         <a className={`pagination toggle-products-view ${activeView === 'inline' ? 'active' : ''}`} onClick={() => handleToggle('inline')}>
                             <img src="assets/img/icon-14.png" alt="" />
@@ -85,23 +97,12 @@ const ProductList = () => {
                             <img src="assets/img/icon-17.png" alt="" />
                         </a>
 
-                        <div className="align-inline spacing-1 filtration-cell-width-2">
-                            <select className="SlectBox small">
-                                <option disabled="disabled"  >Show 30</option>
-                                <option value="volvo">30</option>
-                                <option value="saab">50</option>
-                                <option value="mercedes">100</option>
-                                <option value="audi">200</option>
-                            </select>
-                        </div>
-
-
                         <div className="empty-space col-xs-b25 col-sm-b60"></div>
 
                         <div className={`products-content ${activeView === 'inline' ? 'view-inline' : ''}`}>
                             <div className="products-wrapper">
                                 <div className="row nopadding">
-                                    { currentProducts?.map((product, i) => (
+                                    {currentPageProducts?.map((product, i) => (
                                         <div className="col-sm-4" key={product.id}>
                                             <div className="product-shortcode style-1">
                                                 <div className="title">
@@ -134,13 +135,13 @@ const ProductList = () => {
                                                 <div className="description">
                                                     <div className="simple-article text size-2">{product.description}</div>
                                                     <div className="icons">
-                                                        <a className="entry open-popup" data-rel="3" onClick={()=> quickView(product.SKU)}><i className="fa fa-eye" aria-hidden="true"></i></a>
+                                                        <a className="entry open-popup" data-rel="3" onClick={() => quickView(product.SKU)} ><i className="fa fa-eye" aria-hidden="true"></i></a>
                                                         <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    )) 
+                                    ))
 
                                     }
 
@@ -160,16 +161,16 @@ const ProductList = () => {
                             </div>
                             <div className="col-sm-6 text-center">
                                 <div className="pagination-wrapper">
-                                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <a
-                key={page}
-                className={`pagination ${currentPage === page ? "active" : ""}`}
-                onClick={() => handlePageChange(page)}
-              >
-                {page}
-              </a>
-            ))}
-                                    
+                                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                                        <a
+                                            key={page}
+                                            className={`pagination ${currentPage === page ? "active" : ""}`}
+                                            onClick={() => setCurrentPage(page)}
+                                        >
+                                            {page}
+                                        </a>
+                                    ))}
+
                                 </div>
                             </div>
                             <div className="col-sm-3 hidden-xs text-right">
@@ -191,11 +192,11 @@ const ProductList = () => {
                         <div id="prices-range">
                             <Slider
                                 className="react-slider"
-                                value={[minPrice, maxPrice]}
-                                min={initialMinPrice}
-                                max={initialMaxPrice}
+                                value={priceRange}
+                                min={40}
+                                max={900}
                                 step={5}
-                                onChange={handleSliderChange}
+                                onChange={handlePriceChange}
                                 renderTrack={(props) => <div {...props} className="track" />}
                                 renderThumb={(props) => <div {...props} className="thumb" />}
                             />
@@ -219,7 +220,10 @@ const ProductList = () => {
                                         {j > 0 && <div className="empty-space col-xs-b10"></div>}
 
                                         <label className="checkbox-entry">
-                                            <input type="checkbox" /><span>{sub_category.title}</span>
+                                            <input type="checkbox"
+                                                value={sub_category.id}
+                                                onChange={handleSubCategoryChange}
+                                            /><span>{sub_category.title}</span>
                                         </label>
                                     </React.Fragment>
                                 ))}
