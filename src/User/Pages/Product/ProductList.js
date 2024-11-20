@@ -65,7 +65,7 @@ const ProductList = () => {
 
     const filteredProducts = products.filter((product) => {
         const priceInRange = product.price >= priceRange[0] && product.price <= priceRange[1];
-        const subCategoryMatch = selectedSubCategories.length === 0 || selectedSubCategories.includes(product.sub_category_id);
+        const subCategoryMatch = selectedSubCategories.length === 0 || product.filters.some(filter => selectedSubCategories.includes(filter.sub_category_id));
 
         return priceInRange && subCategoryMatch;
     });
