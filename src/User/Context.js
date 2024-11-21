@@ -82,6 +82,8 @@ export const Context = ({ children }) => {
       ...prevContext,
       cart: [...prevContext.cart, cartData.cart],
     }));
+    toast.update(toastId, { render: data.message, type: 'success', isLoading: false, autoClose: true });
+    
   } else {
     // Updating existing item quantity in cart
     const updatedCarts = context.cart.map((cart) =>
