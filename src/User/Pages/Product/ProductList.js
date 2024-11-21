@@ -16,7 +16,7 @@ const ProductList = () => {
     const [categories, setCategories] = useState([]);
     const [storagePath, setStoragePath] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 1; // Number of products per page
+    const productsPerPage = 10; // Number of products per page
     const [priceRange, setPriceRange] = useState([40, 900]);
     const [activeView, setActiveView] = useState("inline");
     const [selectedSubCategories, setSelectedSubCategories] = useState([]);
