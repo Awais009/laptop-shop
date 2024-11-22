@@ -55,15 +55,15 @@ export const Context = ({ children }) => {
   };
 
 
-    const addCart = async (data) => {
+    const addCart = async (formData) => {
       const toastId = toast.loading('Submitting...');
       try {
-          const response = await axios.post(
+          const {data} = await axios.post(
               `${apiUrl}/cart/carts`,
               {
                   // Include relevant item details here
-                  product_id: data.product_id, // or whatever your API expects
-                  qty: data.qty || 1 // Set a default quantity if not provided
+                  product_id: formData.product_id, // or whatever your API expects
+                  qty: formData.qty || 1 // Set a default quantity if not provided
               },
               {
                   headers: {
@@ -73,29 +73,25 @@ export const Context = ({ children }) => {
           );
 
 
-           const cartData = response.data;
-
-  if (cartData.status) {
+  if (data.status) {
     // Adding new item to cart
 
     setContext((prevContext) => ({
       ...prevContext,
-      cart: [...prevContext.cart, cartData.cart],
+      cart: [...prevContext.cart, data.cart],
     }));
     toast.update(toastId, { render: data.message, type: 'success', isLoading: false, autoClose: true });
     
   } else {
     // Updating existing item quantity in cart
-    const updatedCarts = context.cart.map((cart) =>
-      cart.id === cartData.cart.id ? { ...cart, qty: cartData.cart.qty } : cart
+    const updatedCarts = context.cart?.map((cart) =>
+      cart.id === data.cart.id ? { ...cart, qty: data.cart.qty } : cart
     );
-
     setContext((prevContext) => ({
       ...prevContext,
       cart: updatedCarts,
     }));
     toast.update(toastId, { render: data.message, type: 'success', isLoading: false, autoClose: true });
-
   }
 } catch (error) {
   const message = error.response?.data?.message || "An error occurred.";
