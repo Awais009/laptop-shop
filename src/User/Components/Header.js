@@ -205,7 +205,7 @@ const Header = () => {
                                                             <ul>
                                                                 {navigation.items.map((item, itemKey) => (
                                                                     <li key={itemKey}>
-                                                                        <Link to={`/${navigation.title}/${item.title}/product-list`}>{item.title}</Link>
+                                                                        <Link to={`/${item.title}/product-list`}>{item.title}</Link>
                                                                     </li>
                                                                 ))}
                                                             </ul>

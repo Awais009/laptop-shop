@@ -40,7 +40,6 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path="product-list" element={<ProductList />} />
             <Route path=":nav/product-list" element={<ProductList />} />
-            <Route path=":nav/:nav_item/product-list" element={<ProductList />} />
             <Route path="product/:SKU" element={<ProductDetail />} />
             <Route path="shopping-cart" element={<ShoppingCart />} />
             <Route path="contact-us" element={<Contact />} />

@@ -25,7 +25,7 @@ const ProductList = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${apiUrl}/products?nav=${nav || ""}&nav_item=${nav_item || ""}`);
+                const response = await axios.get(`${apiUrl}/products?nav=${nav || ""}`);
                 setProducts(response.data.products);
                 setCategories(response.data.categories);
                 setStoragePath(response.data.storagePath);
@@ -106,7 +106,7 @@ const ProductList = () => {
                                         <div className="col-sm-4" key={product.id}>
                                             <div className="product-shortcode style-1">
                                                 <div className="title">
-                                                    <div className="simple-article size-1 color col-xs-b5"><a href="#">{product.navigation_item?.title}</a></div>
+                                                    <div className="simple-article size-1 color col-xs-b5"><a to={`/${product.navigation_item?.title}/product-list`}>{product.navigation_item?.title}</a></div>
                                                     <div className="h6 animate-to-green"><Link to={`/product/${product.SKU}`}>{product.title}</Link></div>
                                                 </div>
                                                 <div className="preview">

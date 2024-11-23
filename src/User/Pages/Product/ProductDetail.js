@@ -44,13 +44,7 @@ const ProductDetail = () => {
     return (
         <>
             <div className="container">
-                <div className="empty-space col-xs-b15 col-sm-b30"></div>
-                <div className="breadcrumbs">
-                    <a href="#">home </a>
-                    <a href="#">accessories</a>
-                    <a href="#">gadgets</a>
-                    <a href="#">sport gadgets</a>
-                </div>
+               
                 <div className="empty-space col-xs-b15 col-sm-b50 col-md-b100"></div>
                 <div className="row">
                     <div className="col-md-9 col-md-push-3">
@@ -163,20 +157,7 @@ const ProductDetail = () => {
                                         </a>
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="col-sm-3">
-                                        <div className="h6 detail-data-title size-2">share:</div>
-                                    </div>
-                                    <div className="col-sm-9">
-                                        <div className="follow light">
-                                            <a className="entry" href="#"><i className="fa fa-facebook"></i></a>
-                                            <a className="entry" href="#"><i className="fa fa-twitter"></i></a>
-                                            <a className="entry" href="#"><i className="fa fa-linkedin"></i></a>
-                                            <a className="entry" href="#"><i className="fa fa-google-plus"></i></a>
-                                            <a className="entry" href="#"><i className="fa fa-pinterest-p"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
+                               
                             </div>
                         </div>
 
@@ -262,7 +243,7 @@ const ProductDetail = () => {
                                     <ul>
                                         {navigation.items && navigation.items.map((item, j) => (
                                             <li>
-                                                <Link to={`/${navigation.title}/${item.title}/product-list`}>{item.title}</Link>
+                                                <Link to={`/${item.title}/product-list`}>{item.title}</Link>
 
                                             </li>
                                         ))}
