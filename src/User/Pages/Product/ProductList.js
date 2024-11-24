@@ -17,7 +17,7 @@ const ProductList = () => {
     const [storagePath, setStoragePath] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 10; // Number of products per page
-    const [priceRange, setPriceRange] = useState([40, 900]);
+    const [priceRange, setPriceRange] = useState([1, 100000]);
     const [activeView, setActiveView] = useState("inline");
     const [selectedSubCategories, setSelectedSubCategories] = useState([]);
     const apiUrl = process.env.REACT_APP_API_URL;
@@ -65,7 +65,14 @@ const ProductList = () => {
 
     const filteredProducts = products.filter((product) => {
         const priceInRange = product.price >= priceRange[0] && product.price <= priceRange[1];
-        const subCategoryMatch = selectedSubCategories.length === 0 || product.filters.some(filter => selectedSubCategories.includes(filter.sub_category_id));
+        
+         // Ensure types match by converting to a common type (e.g., string for comparison)
+    const subCategoryMatch =
+        selectedSubCategories.length === 0 ||
+        selectedSubCategories.some((subCategory) =>
+            product.filters.some((filter) => String(filter.sub_category_id) === String(subCategory))
+        );
+
 
         return priceInRange && subCategoryMatch;
     });
@@ -193,9 +200,9 @@ const ProductList = () => {
                             <Slider
                                 className="react-slider"
                                 value={priceRange}
-                                min={40}
-                                max={900}
-                                step={5}
+                                min={1}
+                                max={100000}
+                                step={1}
                                 onChange={handlePriceChange}
                                 renderTrack={(props) => <div {...props} className="track" />}
                                 renderThumb={(props) => <div {...props} className="thumb" />}
@@ -209,13 +216,13 @@ const ProductList = () => {
 
                         <div className="empty-space col-xs-b25 col-sm-b50"></div>
 
-                        {categories && categories.map((category, i) => (
+                        { categories?.map((category, i) => (
                             <React.Fragment key={i}>
                                 {i > 0 && <div className="empty-space col-xs-b25 col-sm-b50"></div>}
 
                                 <div className="h4 col-xs-b25">{category.title}</div>
 
-                                {category.sub_categories && category.sub_categories.map((sub_category, j) => (
+                                {  category?.sub_categories?.map((sub_category, j) => (
                                     <React.Fragment key={j}>
                                         {j > 0 && <div className="empty-space col-xs-b10"></div>}
 
