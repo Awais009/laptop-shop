@@ -13,26 +13,22 @@ import { useEffect } from 'react';
 import $ from 'jquery'
 
 const App = () => {
-  // const Protected = ({ children }) => {
-  //   useEffect(() => {
-  //     if (!sessionStorage.getItem('token')) {
-  //       console.log($('#login'))
-  //       setTimeout(() => {
-  //         $('.open-popup').trigger('click');
-  //       }, 1000);
-  //     }
-  //   }, [sessionStorage.getItem('token')])
-  //   if (!sessionStorage.getItem('token')) {
-  //     return (
-  //       <>
-  //         {/* <a id='login' className="open-popup" style={{display: 'none'}} data-rel="1"><b>login</b></a> */}
-  //       </>
-  //     )
-  //   }
-  //   return (
-  //     <div>{children}</div>
-  //   )
-  // }
+  const Protected = ({ children }) => {
+    useEffect(() => {
+      if (!sessionStorage.getItem('token')) {
+        console.log($('#login'))
+        setTimeout(() => {
+          $('.open-popup').trigger('click');
+        }, 1000);
+      }
+    }, [sessionStorage.getItem('token')])
+    if (!sessionStorage.getItem('token')) {
+      return <Navigate to="/"  replace />;
+    }
+    return (
+      <div>{children}</div>
+    )
+  }
   return (
       <Router>
         <Routes>
@@ -40,11 +36,26 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path="product-list" element={<ProductList />} />
             <Route path=":nav/product-list" element={<ProductList />} />
+            <Route path=":nav/:nav_item/product-list" element={<ProductList />} />
             <Route path="product/:SKU" element={<ProductDetail />} />
-            <Route path="shopping-cart" element={<ShoppingCart />} />
             <Route path="contact-us" element={<Contact />} />
             <Route path="about-us" element={<AboutUs />} />
-            <Route path="checkout" element={<Checkout />} />
+            <Route
+            path="shopping-cart"
+            element={
+              <Protected>
+                <ShoppingCart />
+              </Protected>
+            }
+          />
+          <Route
+            path="checkout"
+            element={
+              <Protected>
+                <Checkout />
+              </Protected>
+            }
+          />
             <Route path="services" element={<Services />} />
           </Route>
         </Routes>

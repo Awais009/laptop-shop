@@ -64,11 +64,7 @@ const Checkout = () => {
         <>
             <div className="container">
                 <div className="empty-space col-xs-b15 col-sm-b30"></div>
-                <div className="breadcrumbs">
-                    <a href="#">home</a>
-                    <a href="#">checkout</a>
-                </div>
-                <div className="empty-space col-xs-b15 col-sm-b50 col-md-b100"></div>
+              
                 <div className="text-center">
                     <div className="simple-article size-3 grey uppercase col-xs-b5">checkout</div>
                     <div className="h2">check your info</div>
@@ -76,7 +72,6 @@ const Checkout = () => {
                 </div>
             </div>
 
-            <div className="empty-space col-xs-b35 col-md-b70"></div>
 
             <div className="container">
                 <div className="row">

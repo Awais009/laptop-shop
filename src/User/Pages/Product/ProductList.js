@@ -8,7 +8,7 @@ import { DataContext } from '../../Context';
 
 const ProductList = () => {
 
-    const { context, addCart, quickView } = useContext(DataContext);
+    const { addCart, quickView } = useContext(DataContext);
     const location = useLocation();
     const { nav, nav_item } = useParams();
 
@@ -93,7 +93,7 @@ const ProductList = () => {
                             <div className="h4">Sport gadgets</div>
                         </div>
                         <div className="align-inline spacing-1">
-                            <div className="simple-article size-1">SHOWING <b className="grey">{productsPerPage * currentPage}</b> OF <b className="grey">{products.length}</b> RESULTS</div>
+                            <div className="simple-article size-1">SHOWING <b className="grey">{currentPageProducts.length * currentPage}</b> OF <b className="grey">{products.length}</b> RESULTS</div>
                         </div>
                         <a className={`pagination toggle-products-view ${activeView === 'inline' ? 'active' : ''}`} onClick={() => handleToggle('inline')}>
                             <img src="assets/img/icon-14.png" alt="" />
@@ -110,7 +110,7 @@ const ProductList = () => {
                             <div className="products-wrapper">
                                 <div className="row nopadding">
                                     {currentPageProducts?.map((product, i) => (
-                                        <div className="col-sm-4" key={product.id}>
+                                        <div className="col-sm-4" key={i}>
                                             <div className="product-shortcode style-1">
                                                 <div className="title">
                                                     <div className="simple-article size-1 color col-xs-b5"><a to={`/${product.navigation_item?.title}/product-list`}>{product.navigation_item?.title}</a></div>

@@ -1,6 +1,6 @@
 // import React from "react";
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate  } from "react-router-dom";
 import { DataContext } from '../Context';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -8,6 +8,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 const Header = () => {
 
+    const navigate = useNavigate();
     const { context, setContext, fetchCart, deleteCart } = useContext(DataContext);
     const [navigations, setNavigations] = useState([])
     const calculateTotalPrice = (updatedCarts) => {
@@ -28,7 +29,7 @@ const Header = () => {
                 user: {}
             })
             toast.success(response.data.message || "Logged out successfully.");
-
+            navigate("/", { replace: true });
         } catch (error) {
             toast.error(error.response?.data?.message || "Logout failed. Please try again.");
         }

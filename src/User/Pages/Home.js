@@ -362,7 +362,7 @@ const Home = () => {
                                 <a className="entry open-popup" data-rel="3" onClick={() => quickView(product.SKU)}>
                                   <i className="fa fa-eye" aria-hidden="true"></i>
                                 </a>
-                                <a class="entry"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
                               </div>
                             </div>
                           </div>
@@ -424,7 +424,7 @@ const Home = () => {
                                 <a className="entry open-popup" data-rel="3" onClick={() => quickView(product.SKU)}>
                                   <i className="fa fa-eye" aria-hidden="true"></i>
                                 </a>
-                                <a class="entry"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
                               </div>
                             </div>
                           </div>
@@ -486,7 +486,7 @@ const Home = () => {
                                 <a className="entry open-popup" data-rel="3" onClick={() => quickView(product.SKU)}>
                                   <i className="fa fa-eye" aria-hidden="true"></i>
                                 </a>
-                                <a class="entry"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                <a className="entry"><i className="fa fa-heart-o" aria-hidden="true"></i></a>
                               </div>
                             </div>
                           </div>
