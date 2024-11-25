@@ -24,7 +24,6 @@ var _functions = {};
 
 $(function() {
 
-	"use strict";
 
 	/*================*/
 	/* 01 - VARIABLES */

@@ -181,8 +181,6 @@ const ProductDetail = () => {
                                                 <div className="simple-article">
                                                     <img className="rounded-image img-fluid" src={storagePath + '/' + image.path} width={490} height={243} alt="" />
                                                 </div>
-                                                <div className="empty-space col-xs-b25"></div>
-                                                <div className="h5">Nullam et massa nulla</div>
                                                 <div className="empty-space col-xs-b20"></div>
                                                 <div className="simple-article size-2">
                                                     {image.description}
@@ -204,17 +202,11 @@ const ProductDetail = () => {
                                                     <img className="preview" src={`${storagePath}/${image.path}`} width={490} height={243} alt="" />
                                                 </div>
                                                 <div className="description">
-                                                    <div className="h5">Aenean a tincidunt felis</div>
                                                     <div className="empty-space col-xs-b15"></div>
                                                     <div className="simple-article size-2">
                                                         {image.description}
                                                     </div>
-                                                    <div className="empty-space col-xs-b30 col-sm-b45"></div>
-                                                    <div className="h5">Nulla sed arcu ipsum</div>
-                                                    <div className="empty-space col-xs-b15"></div>
-                                                    <div className="simple-article size-2">
-                                                        Nullam et massa nulla. Quisque nec magna ornare tellus consequat lacinia a quis sem. Vivamus ut posuere nunc. Praesent porttitor vitae augue in semper. Vestibulum non leo et nisi facilisis consequat. Ut volutpat augue faucibus, fermentum turpis convallis, lobortis augue.
-                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                         </React.Fragment>

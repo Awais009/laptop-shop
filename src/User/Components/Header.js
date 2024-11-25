@@ -1,9 +1,11 @@
 // import React from "react";
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DataContext } from '../Context';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import $ from 'jquery';
+import Swiper from 'swiper';
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const Header = () => {
@@ -51,8 +53,13 @@ const Header = () => {
 
     }
 
+
+
+    
     useEffect(() => {
-        if(context.token){
+
+    
+        if (context.token) {
 
             fetchCart();
         }

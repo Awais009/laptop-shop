@@ -30,7 +30,7 @@ const App = () => {
     )
   }
   return (
-      <Router>
+      <Router >
         <Routes>
           <Route path="/" element={<UserLayout />}>
             <Route index element={<Home />} />
