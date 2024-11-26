@@ -187,15 +187,6 @@ const Header = () => {
                                         <ul>
                                             <li className="active">
                                                 <Link to="/">Home</Link>
-                                                {/* <div className="menu-toggle"></div>
-                                            <ul>
-                                                <li className="active"><a href="index1.html">Homepage 1</a></li>
-                                                <li><a href="index2.html">Homepage 2</a></li>
-                                                <li><a href="index3.html">Homepage 3</a></li>
-                                                <li><a href="index4.html">Homepage 4</a></li>
-                                                <li><a href="index5.html">Homepage 5</a></li>
-                                                <li><a href="index6.html">Homepage 6</a></li>
-                                            </ul> */}
                                             </li>
                                             <li>
                                                 <Link to="/about-us">About Us</Link>
@@ -234,7 +225,6 @@ const Header = () => {
                                         </div>
                                     </nav>
                                 </div>
-                                {/* <div className="header-bottom-icon toggle-search"><i className="fa fa-search" aria-hidden="true"></i></div> */}
                                 <div className="header-bottom-icon visible-rd"><i className="fa fa-heart-o" aria-hidden="true"></i></div>
                                 <div className="header-bottom-icon visible-rd">
                                     <i className="fa fa-shopping-bag" aria-hidden="true"></i>
@@ -242,24 +232,6 @@ const Header = () => {
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="header-search-wrapper">
-                        <div className="header-search-content">
-                            <div className="container-fluid">
-                                <div className="row">
-                                    <div className="col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3">
-                                        <form>
-                                            <div className="search-submit">
-                                                <i className="fa fa-search" aria-hidden="true"></i>
-                                                <input type="submit"/>
-                                            </div>
-                                            <input className="simple-input style-1" type="text" value="" placeholder="Enter keyword" />
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="button-close"></div>
-                        </div>
-                    </div> */}
                     </div>
                 </div>
 

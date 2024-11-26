@@ -1,10 +1,20 @@
 // import React from "react";
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext,  useState } from 'react';
 import { DataContext } from '../Context';
 import Register from './register';
 import Login from './login';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-const Footer = (SKU) => {
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import {  Navigation, Controller } from 'swiper/modules';
+
+const Footer = () => {
+    const [mainSwiper, setMainSwiper] = useState(null);
+    const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const { context, addCart } = useContext(DataContext);
     const [quantity, setQuantity] = useState(1);
    
@@ -133,40 +143,57 @@ const Footer = (SKU) => {
                             <div className="row">
                                 <div className="col-sm-6 col-xs-b30 col-sm-b0">
 
-                                    <div className="main-product-slider-wrapper swipers-couple-wrapper">
-                                        <div className="swiper-container swiper-control-top">
-                                            <div className="swiper-button-prev hidden"></div>
-                                            <div className="swiper-button-next hidden"></div>
-                                            <div className="swiper-wrapper">
-                                                {context.product?.images?.map((image) => (
-                                                    <div className="swiper-slide" key={image.id}>
-                                                        <div className="swiper-lazy-preloader"></div>
-                                                        <div className="product-big-preview-entry swiper-lazy" data-background={`${context.storagePath}/${image.path}`}></div>
-                                                    </div>
-                                                ))}
-                                               
+                                <div className="main-product-slider-wrapper swipers-couple-wrapper">
+                                    {/* Main Product Slider */}
+                                    <Swiper
+                                        spaceBetween={10}
+                                        controller={{ control: thumbsSwiper }}
+                                        modules={[ Navigation,  Controller]}
+                                        className="swiper-control-top"
+                                        onSwiper={setMainSwiper}
+                                    >
+                                        {
+                                            context.product?.images?.map((image, i) => (
+                                                <SwiperSlide key={i}>
+                                                    <div
+                                                        className="product-big-preview-entry swiper-lazy"
+                                                        style={{
+                                                            backgroundImage: `url(${context.storagePath}/${image.path})`,
+                                                        }}
+                                                    ></div>
+                                                </SwiperSlide>
+                                            ))}
+                                    </Swiper>
 
-                                            </div>
-                                        </div>
+                                    <div className="empty-space col-xs-b30 col-sm-b60"></div>
 
-                                        <div className="empty-space col-xs-b30 col-sm-b60"></div>
-
-                                        <div className="swiper-container swiper-control-bottom" data-breakpoints="1" data-xs-slides="3" data-sm-slides="3" data-md-slides="4" data-lt-slides="5" data-slides-per-view="5" data-center="1" data-click="1">
-                                            <div className="swiper-button-prev hidden"></div>
-                                            <div className="swiper-button-next hidden"></div>
-                                            <div className="swiper-wrapper">
-                                                {context.product?.images?.map((image)=>(
-                                                <div className="swiper-slide">
+                                    {/* Thumbnail Slider */}
+                                    <Swiper
+                                        spaceBetween={10}
+                                        slidesPerView={3}
+                                        watchSlidesProgress={true}
+                                        controller={{ control: mainSwiper }}
+                                        modules={[ Navigation,  Controller]}
+                                        className="swiper-control-bottom"
+                                        onSwiper={setThumbsSwiper}
+                                        centeredSlides={true}  
+                                        clickable={true}  
+                                    >
+                                        {
+                                            context.product?.images?.map((image, i) => (
+                                                <SwiperSlide key={image.id} onClick={() => mainSwiper && mainSwiper.slideTo(i)}>
                                                     <div className="product-small-preview-entry">
-                                                        <img src={context.storagePath+'/'+image.path} alt="" />
+                                                        <img
+                                                            src={`${context.storagePath}/${image.path}`}
+                                                            alt=""
+                                                            width={85}
+                                                            height={85}
+                                                        />
                                                     </div>
-                                                </div>
-                                                  ))}
-                                               
-
-                                            </div>
-                                        </div>
-                                    </div>
+                                                </SwiperSlide>
+                                            ))}
+                                    </Swiper>
+                                </div>
 
                                 </div>
                                 <div className="col-sm-6">

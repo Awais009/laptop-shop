@@ -3,9 +3,17 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useParams } from "react-router-dom";
 import axios from 'axios';
 import { DataContext } from '../../Context';
-import $ from 'jquery';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import { FreeMode, Navigation, Thumbs, Controller } from 'swiper/modules';
 const ProductDetail = () => {
+    const [mainSwiper, setMainSwiper] = useState(null);
+    const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const { addCart, context } = useContext(DataContext);
     let location = useLocation();
     const { SKU } = useParams(); // Get the ID from the URL
@@ -23,19 +31,11 @@ const ProductDetail = () => {
                 setNavigations(response.data.navigations);
                 setStoragePath(response.data.storagePath);
 
-                setTimeout(() => {
-                    let winW = $(window).width();
-                    let winH = $(window).height();
-                    let headerH = $('.header-empty-space').height();
-                    $('.page-height').css({ 'height': (winH - headerH <= 500) ? 500 : (winH - headerH) });
-                }, 500);
-
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         };
         setQuantity(1)
-
         fetchData();
     }, [location]);
 
@@ -43,8 +43,12 @@ const ProductDetail = () => {
 
     return (
         <>
+        {/* 
+                                        <div className="swiper-container swiper-control-bottom" data-breakpoints="1" data-xs-slides="3" data-sm-slides="3" data-md-slides="4" data-lt-slides="5" data-slides-per-view="5" data-center="1" data-click="1">
+        
+        */}
             <div className="container">
-               
+
                 <div className="empty-space col-xs-b15 col-sm-b50 col-md-b100"></div>
                 <div className="row">
                     <div className="col-md-9 col-md-push-3">
@@ -52,47 +56,56 @@ const ProductDetail = () => {
                             <div className="col-sm-6 col-xs-b30 col-sm-b0">
 
                                 <div className="main-product-slider-wrapper swipers-couple-wrapper">
-                                    <div className="swiper-container swiper-control-top">
-                                        <div className="swiper-wrapper">
-
-                                            {product.images && product.images.map((image, i) => (
-                                                <div className="swiper-slide" key={i}>
+                                    {/* Main Product Slider */}
+                                    <Swiper
+                                        spaceBetween={10}
+                                        navigation={true}
+                                        controller={{ control: thumbsSwiper }}
+                                        modules={[ Navigation,  Controller]}
+                                        className="swiper-control-top"
+                                        onSwiper={setMainSwiper}
+                                    >
+                                        {
+                                            product?.images?.map((image, i) => (
+                                                <SwiperSlide key={i}>
                                                     <div
                                                         className="product-big-preview-entry swiper-lazy"
-                                                        data-background={`${storagePath}/${image.path}`}
+                                                        style={{
+                                                            backgroundImage: `url(${storagePath}/${image.path})`,
+                                                        }}
                                                     ></div>
-                                                </div>
+                                                </SwiperSlide>
                                             ))}
-
-
-                                            {/* <div className="swiper-slide">
-                                                <div className="product-big-preview-entry " data-background="assets/img/product-4.png"></div>
-                                            </div>
-                                            <div className="swiper-slide">
-                                                <div className="product-big-preview-entry " data-background="assets/img/product-4.png"></div>
-                                            </div>
-                                            <div className="swiper-slide">
-                                                <div className="product-big-preview-entry " data-background="assets/img/product-4.png"></div>
-                                            </div> */}
-
-
-                                        </div>
-                                    </div>
+                                    </Swiper>
 
                                     <div className="empty-space col-xs-b30 col-sm-b60"></div>
-                                    <div className="swiper-container swiper-control-bottom" data-breakpoints="1" data-xs-slides="3" data-sm-slides="3" data-md-slides="4" data-lt-slides="4" data-slides-per-view="5" data-center="1" data-click="1">
-                                        <div className="swiper-button-prev hidden"></div>
-                                        <div className="swiper-button-next hidden"></div>
-                                        <div className="swiper-wrapper">
-                                            {product.images && product.images.map((image, i) => (
-                                                <div className="swiper-slide"  >
+
+                                    {/* Thumbnail Slider */}
+                                    <Swiper
+                                        spaceBetween={10}
+                                        slidesPerView={3}
+                                        watchSlidesProgress={true}
+                                        controller={{ control: mainSwiper }}
+                                        modules={[ Navigation,  Controller]}
+                                        className="swiper-control-bottom"
+                                        onSwiper={setThumbsSwiper}
+                                        centeredSlides={true}  
+                                        clickable={true}  
+                                    >
+                                        {
+                                            product?.images?.map((image, i) => (
+                                                <SwiperSlide key={image.id} onClick={() => mainSwiper && mainSwiper.slideTo(i)}>
                                                     <div className="product-small-preview-entry">
-                                                        <img src={storagePath + '/' + image.path} alt="" width={85} height={85} />
+                                                        <img
+                                                            src={`${storagePath}/${image.path}`}
+                                                            alt=""
+                                                            width={85}
+                                                            height={85}
+                                                        />
                                                     </div>
-                                                </div>
+                                                </SwiperSlide>
                                             ))}
-                                        </div>
-                                    </div>
+                                    </Swiper>
                                 </div>
 
                             </div>
@@ -157,7 +170,7 @@ const ProductDetail = () => {
                                         </a>
                                     </div>
                                 </div>
-                               
+
                             </div>
                         </div>
 
@@ -206,7 +219,7 @@ const ProductDetail = () => {
                                                     <div className="simple-article size-2">
                                                         {image.description}
                                                     </div>
-                                                    
+
                                                 </div>
                                             </div>
                                         </React.Fragment>
@@ -228,13 +241,13 @@ const ProductDetail = () => {
                         <div className="h4 col-xs-b10">popular categories</div>
                         <ul className="categories-menu transparent">
                             {navigations && navigations.map((navigation, i) => (
-                                <li>
+                                <li key={i}>
                                     <Link to={`/${navigation.title}/product-list`}>{navigation.title}</Link>
 
                                     {navigation.items.length > 0 && <div className="toggle"></div>}
                                     <ul>
                                         {navigation.items && navigation.items.map((item, j) => (
-                                            <li>
+                                            <li key={j}>
                                                 <Link to={`/${item.title}/product-list`}>{item.title}</Link>
 
                                             </li>
@@ -253,10 +266,10 @@ const ProductDetail = () => {
                 <div className="row">
                     {navigations?.map((navigation) => (
                         navigation.products.length > 0 &&
-                        <div className="col-sm-6 col-md-3 col-xs-b25">
+                        <div className="col-sm-6 col-md-3 col-xs-b25" key={navigation.id}>
                             <div className="h4 col-xs-b25">{navigation.title}</div>
                             {navigation.products?.map((product) => (
-                                <>
+                               <React.Fragment key={product.id}>
                                     <div className="col-xs-b10"></div>
                                     <div className="product-shortcode style-4 rounded clearfix">
                                         <Link className="preview" to={"/product/" + product.SKU}><img src={storagePath + "/" + product.image.path} alt="" /></Link>
@@ -266,7 +279,7 @@ const ProductDetail = () => {
                                             <div className="simple-article dark">${product.price}</div>
                                         </div>
                                     </div>
-                                </>
+                                    </ React.Fragment>
 
                             ))}
 

@@ -1,5 +1,5 @@
 // import React from "react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import { DataContext } from "../Context";
@@ -13,6 +13,9 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [storagePath, setStoragePath] = useState('');
   const { context, setContext, addCart, quickView } = useContext(DataContext);
+   // Create references for custom navigation buttons
+   const prevRef = useRef(null);
+   const nextRef = useRef(null);
 
   const apiUrl = process.env.REACT_APP_API_URL; // Or use a config file
 
@@ -48,7 +51,6 @@ const Home = () => {
       <div className="slider-wrapper">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
-          navigation
           pagination={{ clickable: true }}
           autoplay={{ delay: 3000 }}
           className="swiper-container"
@@ -231,21 +233,24 @@ const Home = () => {
 
               <div className="empty-space col-xs-b35 col-md-b70"></div>
 
-              <div
-                className="swiper-container arrows-align-top"
-                data-breakpoints="1"
-                data-xs-slides="1"
-                data-sm-slides="3"
-                data-md-slides="4"
-                data-lt-slides="4"
-                data-slides-per-view="4"
-              >
+              <div className="swiper-container arrows-align-top" >
                 <div className="h4 swiper-title">our best categories</div>
                 <div className="empty-space col-xs-b20"></div>
-                <div className="swiper-button-prev style-1"></div>
-                <div className="swiper-button-next style-1"></div>
-                <div className="swiper-wrapper">
-                  <div className="swiper-slide">
+                <div className="swiper-button-prev style-1" ref={prevRef}></div>
+                <div className="swiper-button-next style-1" ref={nextRef}></div>
+                  <Swiper
+                   navigation={{
+                    prevEl: prevRef.current,
+                    nextEl: nextRef.current,
+                  }}
+        spaceBetween={10} // Space between slides
+        slidesPerView={2} // Number of slides per view
+        pagination={{ clickable: true }} // Enable pagination
+        modules={[Navigation]} // Import necessary Swiper modules
+        className="swiper-wrapper"
+      >
+        {/* Example Product Item 1 */}
+        <SwiperSlide>
                     <a className="product-shortcode style-2" href="#">
                       <span className="preview">
                         <img src="assets/img/product-13.png" alt="" />
@@ -272,10 +277,94 @@ const Home = () => {
                         </span>
                       </span>
                     </a>
-                  </div>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                    <a className="product-shortcode style-2" href="#">
+                      <span className="preview">
+                        <img src="assets/img/product-13.png" alt="" />
+                      </span>
+                      <span className="description">
+                        <span className="h6 animate-to-green">
+                          smart watches
+                        </span>
+                        <span className="simple-article size-1 animate-to-fulltransparent">
+                          137 PRODUCTS
+                        </span>
+                      </span>
+                    </a>
+                    <a className="product-shortcode style-2" href="#">
+                      <span className="preview">
+                        <img src="assets/img/product-17.png" alt="" />
+                      </span>
+                      <span className="description">
+                        <span className="h6 animate-to-green">
+                          smart watches
+                        </span>
+                        <span className="simple-article size-1 animate-to-fulltransparent">
+                          137 PRODUCTS
+                        </span>
+                      </span>
+                    </a>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                    <a className="product-shortcode style-2" href="#">
+                      <span className="preview">
+                        <img src="assets/img/product-13.png" alt="" />
+                      </span>
+                      <span className="description">
+                        <span className="h6 animate-to-green">
+                          smart watches
+                        </span>
+                        <span className="simple-article size-1 animate-to-fulltransparent">
+                          137 PRODUCTS
+                        </span>
+                      </span>
+                    </a>
+                    <a className="product-shortcode style-2" href="#">
+                      <span className="preview">
+                        <img src="assets/img/product-17.png" alt="" />
+                      </span>
+                      <span className="description">
+                        <span className="h6 animate-to-green">
+                          smart watches
+                        </span>
+                        <span className="simple-article size-1 animate-to-fulltransparent">
+                          137 PRODUCTS
+                        </span>
+                      </span>
+                    </a>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                    <a className="product-shortcode style-2" href="#">
+                      <span className="preview">
+                        <img src="assets/img/product-13.png" alt="" />
+                      </span>
+                      <span className="description">
+                        <span className="h6 animate-to-green">
+                          smart watches
+                        </span>
+                        <span className="simple-article size-1 animate-to-fulltransparent">
+                          137 PRODUCTS
+                        </span>
+                      </span>
+                    </a>
+                    <a className="product-shortcode style-2" href="#">
+                      <span className="preview">
+                        <img src="assets/img/product-17.png" alt="" />
+                      </span>
+                      <span className="description">
+                        <span className="h6 animate-to-green">
+                          smart watches
+                        </span>
+                        <span className="simple-article size-1 animate-to-fulltransparent">
+                          137 PRODUCTS
+                        </span>
+                      </span>
+                    </a>
+                    </SwiperSlide>
+                    </Swiper>
 
 
-                </div>
                 <div className="swiper-pagination relative-pagination visible-xs"></div>
               </div>
 
