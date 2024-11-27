@@ -219,7 +219,7 @@ const Footer = () => {
                                             <div className="simple-article size-3 col-xs-b5">ITEM NO.: <span className="grey">{context.product?.SKU}</span></div>
                                         </div>
                                         <div className="col-sm-6 col-sm-text-right">
-                                            <div className="simple-article size-3 col-xs-b20">AVAILABLE.: <span className="grey">YES</span></div>
+                                            <div className="simple-article size-3 col-xs-b20">AVAILABLE.: <span className="grey">{context.product?.status ?' YES' : 'Out of stock'}</span></div>
                                         </div>
                                     </div>
                                     <div className="simple-article size-3 col-xs-b30">{context.product?.description}</div>

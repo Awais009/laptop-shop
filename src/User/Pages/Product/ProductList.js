@@ -90,7 +90,7 @@ const ProductList = () => {
                     <div className="col-md-9 col-md-push-3">
 
                         <div className="align-inline spacing-1">
-                            <div className="h4">Sport gadgets</div>
+                            <div className="h4">{nav}</div>
                         </div>
                         <div className="align-inline spacing-1">
                             <div className="simple-article size-1">SHOWING <b className="grey">{currentPageProducts.length * currentPage}</b> OF <b className="grey">{products.length}</b> RESULTS</div>
@@ -117,7 +117,7 @@ const ProductList = () => {
                                                     <div className="h6 animate-to-green"><Link to={`/product/${product.SKU}`}>{product.title}</Link></div>
                                                 </div>
                                                 <div className="preview">
-                                                    <img src={`${storagePath}/${product.image.path}`} style={{ height: '170px' }} alt="producImage" />
+                                                    <img src={`${storagePath}/${product.image.path}`} style={{width:'200px', height:'200px'}} alt="producImage" />
                                                     <div className="preview-buttons valign-middle">
                                                         <div className="valign-middle-content">
                                                             <Link className="button size-2 style-2" to={`/product/${product.SKU}`}>

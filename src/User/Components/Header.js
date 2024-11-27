@@ -113,9 +113,7 @@ const Header = () => {
                                                                                         <div className="simple-article size-3 grey">${cart?.product?.price}</div>
                                                                                         <div className="simple-article size-1">TOTAL: ${cart?.product?.price * cart?.qty}</div>
                                                                                     </td>
-                                                                                    <td>
-                                                                                        <div className="cart-color" style={{ color: "#eee" }}></div>
-                                                                                    </td>
+                                                                                   
                                                                                     <td>
                                                                                         <div className="button-close" onClick={() => deleteCart(cart.id)}></div>
                                                                                     </td>

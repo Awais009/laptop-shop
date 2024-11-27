@@ -122,7 +122,7 @@ const Home = () => {
                       <div className="valign-middle-content">
                         {product.images?.map((image, image_key) => (
                           <div key={image_key} className={`entry ${image_key ?  "" : "active" } `}>
-                            <img src={`${storagePath}/${image.path}`} alt="" />
+                            <img src={`${storagePath}/${image.path}`} alt="" style={{width:'68px', height:'68px'}} />
                           </div>
                         ))}
                       </div>
@@ -174,7 +174,7 @@ const Home = () => {
                               </div>
                             </div>
                             <div className="preview">
-                              <img src={`${storagePath}/${product.image?.path}`} alt="" />
+                              <img src={`${storagePath}/${product.image?.path}`} alt="" style={{width:'200px', height:'200px'}} />
                               <div className="preview-buttons valign-middle">
                                 <div className="valign-middle-content">
                                   <Link
@@ -233,7 +233,7 @@ const Home = () => {
 
               <div className="empty-space col-xs-b35 col-md-b70"></div>
 
-              <div className="swiper-container arrows-align-top" >
+              {/* <div className="swiper-container arrows-align-top" >
                 <div className="h4 swiper-title">our best categories</div>
                 <div className="empty-space col-xs-b20"></div>
                 <div className="swiper-button-prev style-1" ref={prevRef}></div>
@@ -249,7 +249,7 @@ const Home = () => {
         modules={[Navigation]} // Import necessary Swiper modules
         className="swiper-wrapper"
       >
-        {/* Example Product Item 1 */}
+     
         <SwiperSlide>
                     <a className="product-shortcode style-2" href="#">
                       <span className="preview">
@@ -366,7 +366,7 @@ const Home = () => {
 
 
                 <div className="swiper-pagination relative-pagination visible-xs"></div>
-              </div>
+              </div> */}
 
 
               <div className="empty-space col-xs-b35 col-md-b70"></div>
@@ -412,7 +412,7 @@ const Home = () => {
                             </div>
                           </div>
                           <div className="preview">
-                            <img src={context.storagePath + "/" + product.image.path} alt="" />
+                            <img src={context.storagePath + "/" + product.image.path} alt="" style={{width:'200px', height:'200px'}} />
                             <div className="preview-buttons valign-middle">
                               <div className="valign-middle-content">
                                 <Link

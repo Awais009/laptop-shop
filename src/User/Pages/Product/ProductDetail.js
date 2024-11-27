@@ -83,7 +83,7 @@ const ProductDetail = () => {
                                     {/* Thumbnail Slider */}
                                     <Swiper
                                         spaceBetween={10}
-                                        slidesPerView={3}
+                                        slidesPerView={4}
                                         watchSlidesProgress={true}
                                         controller={{ control: mainSwiper }}
                                         modules={[ Navigation,  Controller]}
@@ -181,7 +181,7 @@ const ProductDetail = () => {
                                 <div className="tabulation-title simple-input">description</div>
                                 <ul className="tabulation-toggle">
                                     <li><a className="tab-menu active">description</a></li>
-
+                                    <li><a className="tab-menu ">Reviews</a></li>
                                 </ul>
                             </div>
                             <div className="empty-space col-xs-b30 col-sm-b60"></div>
@@ -192,7 +192,7 @@ const ProductDetail = () => {
                                         i < 2 && (
                                             <div key={i} className={`col-sm-6 ${i === 0 ? "col-xs-b30 col-sm-b0" : ''}`}>
                                                 <div className="simple-article">
-                                                    <img className="rounded-image img-fluid" src={storagePath + '/' + image.path} width={490} height={243} alt="" />
+                                                    <img className="rounded-image img-fluid" src={storagePath + '/' + image.path} style={{width:'409px', height:'243px'}} alt="" />
                                                 </div>
                                                 <div className="empty-space col-xs-b20"></div>
                                                 <div className="simple-article size-2">
@@ -212,7 +212,7 @@ const ProductDetail = () => {
                                             <div className="empty-space col-xs-b35 col-md-b70"></div>
                                             <div className={`left-right-entry clearfix ${i % 2 == 0 ? "align-right" : ""}`}>
                                                 <div className="preview-wrapper">
-                                                    <img className="preview" src={`${storagePath}/${image.path}`} width={490} height={243} alt="" />
+                                                    <img className="preview" src={`${storagePath}/${image.path}`} style={{width:'381px', height:'381px'}} alt="" />
                                                 </div>
                                                 <div className="description">
                                                     <div className="empty-space col-xs-b15"></div>
@@ -228,6 +228,65 @@ const ProductDetail = () => {
 
 
                             </div>
+
+                            <div className="tab-entry">
+                            <div className="testimonial-entry">
+                                <div className="row col-xs-b20">
+                                    <div className="col-xs-8">
+                                        <img className="preview" src="assets/img/testimonial-1.jpg" alt="" />
+                                        <div className="heading-description">
+                                            <div className="h6 col-xs-b5">Dorian gray</div>
+                                            <div className="rate-wrapper align-inline">
+                                                <i className="fa fa-star" aria-hidden="true"></i>
+                                                <i className="fa fa-star" aria-hidden="true"></i>
+                                                <i className="fa fa-star" aria-hidden="true"></i>
+                                                <i className="fa fa-star" aria-hidden="true"></i>
+                                                <i className="fa fa-star-o" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xs-4 text-right">
+                                        <div className="simple-article size-1 grey">20:45 APR 07 / 15</div>
+                                    </div>
+                                </div>
+                                <div className="simple-article size-2 col-xs-b15">Sed sodales sed orci molestie tristique. Nunc dictum, erat id molestie vestibulum, ex leo vestibulum justo, luctus tempor erat sem quis diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur vulputate elit. </div>
+                            </div>
+                           
+                            <form>
+                                <div className="row m10">
+                                   
+                                    <div className="col-sm-12">
+                                        <textarea className="simple-input" placeholder="Your comment"></textarea>
+                                        <div className="empty-space col-xs-b20"></div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-xs-6">
+                                        <div className="align-inline">
+                                            <div className="empty-space col-xs-b5"></div>
+                                            <div className="simple-article size-3">Rating&nbsp;&nbsp;&nbsp;</div>
+                                            <div className="empty-space col-xs-b5"></div>
+                                        </div>
+                                        <div className="rate-wrapper set align-inline">
+                                            <i className="fa fa-star-o" aria-hidden="true"></i>
+                                            <i className="fa fa-star-o" aria-hidden="true"></i>
+                                            <i className="fa fa-star-o" aria-hidden="true"></i>
+                                            <i className="fa fa-star-o" aria-hidden="true"></i>
+                                            <i className="fa fa-star-o" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                    <div className="col-xs-6 text-right">
+                                        <div className="button size-2 style-3">
+                                            <span className="button-wrapper">
+                                                <span className="icon"><img src="assets/img/icon-4.png" alt="" /></span>
+                                                <span className="text">submit</span>
+                                            </span>
+                                            <input type="submit" value="" /> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                         </div>
 
 
@@ -272,7 +331,7 @@ const ProductDetail = () => {
                                <React.Fragment key={product.id}>
                                     <div className="col-xs-b10"></div>
                                     <div className="product-shortcode style-4 rounded clearfix">
-                                        <Link className="preview" to={"/product/" + product.SKU}><img src={storagePath + "/" + product.image.path} alt="" /></Link>
+                                        <Link className="preview" to={"/product/" + product.SKU}><img src={storagePath + "/" + product.image.path} style={{width:'83px', height:'83px'}} alt="" /></Link>
                                         <div className="description">
                                             <div className="simple-article color size-1 col-xs-b5">{navigation.title}</div>
                                             <h6 className="h6 col-xs-b10"><Link to={"/product/" + product.SKU}>{product.title}</Link></h6>

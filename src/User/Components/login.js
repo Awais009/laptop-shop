@@ -65,7 +65,7 @@ const Login = () => {
                         <div className="row">
                             <div className="col-sm-6 col-xs-b10 col-sm-b0">
                                 <div className="empty-space col-sm-b5"></div>
-                                <a className="simple-link">Forgot password?</a>
+                                {/* <a className="simple-link">Forgot password?</a> */}
                                 <div className="empty-space col-xs-b5"></div>
                                 <a className="simple-link open-popup" data-rel="2"> register now</a>
                             </div>
