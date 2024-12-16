@@ -104,7 +104,7 @@ const Footer = () => {
                     </div>
                     <div className="footer-bottom">
                         <div className="row">
-                            <div className="col-lg-8 col-xs-text-center col-lg-text-left col-xs-b20 col-lg-b0">
+                            <div className="col-lg-12 col-xs-text-center col-xs-b20 col-lg-b0">
                                 <div className="copyright">&copy; 2015 All rights reserved. Development by <a href="https://itpowersystems.com/" target="_blank">IT Power Systems</a></div>
                                 {/* <div className="follow">
                                 <a className="entry" href="#"><i className="fa fa-facebook"></i></a>
@@ -114,16 +114,7 @@ const Footer = () => {
                                 <a className="entry" href="#"><i className="fa fa-pinterest-p"></i></a>
                             </div> */}
                             </div>
-                            <div className="col-lg-4 col-xs-text-center col-lg-text-right">
-                                <div className="footer-payment-icons">
-                                    <a className="entry"><img src="assets/img/thumbnail-4.jpg" alt="" /></a>
-                                    <a className="entry"><img src="assets/img/thumbnail-5.jpg" alt="" /></a>
-                                    <a className="entry"><img src="assets/img/thumbnail-6.jpg" alt="" /></a>
-                                    <a className="entry"><img src="assets/img/thumbnail-7.jpg" alt="" /></a>
-                                    <a className="entry"><img src="assets/img/thumbnail-8.jpg" alt="" /></a>
-                                    <a className="entry"><img src="assets/img/thumbnail-9.jpg" alt="" /></a>
-                                </div>
-                            </div>
+                           
                         </div>
                     </div>
                 </div>

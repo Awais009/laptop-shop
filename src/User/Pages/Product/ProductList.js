@@ -108,7 +108,7 @@ const ProductList = () => {
 
                         <div className={`products-content ${activeView === 'inline' ? 'view-inline' : ''}`}>
                             <div className="products-wrapper">
-                                <div className="row nopadding">
+                                <div className="row ">
                                     {currentPageProducts?.map((product, i) => (
                                         <div className="col-sm-4" key={i}>
                                             <div className="product-shortcode style-1">

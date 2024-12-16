@@ -158,7 +158,7 @@ const Home = () => {
                 <div className="empty-space col-xs-b30"></div>
                 {navigations ? navigations.map((navigation, i) => (
                   <div className={`tab-entry ${!i ? 'visible' : ''} `} key={i}>
-                    <div className="row nopadding">
+                    <div className="row " >
                       {navigation.products ? navigation.products.map((product, j) => (
                         <div className="col-sm-3" key={j} >
                           <div className="product-shortcode style-1">
@@ -399,7 +399,7 @@ const Home = () => {
 
 
                 <div className="tab-entry visible">
-                  <div className="row nopadding">
+                  <div className="row ">
                     {products.featured?.map((product, key) => (
                       <div className="col-sm-4" key={product.id}>
                         <div className="product-shortcode style-1">
@@ -461,7 +461,7 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="tab-entry">
-                  <div className="row nopadding">
+                  <div className="row ">
                     {products.top_sale?.map((product, key) => (
                       <div className="col-sm-4" key={product.id}>
                         <div className="product-shortcode style-1">
@@ -523,7 +523,7 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="tab-entry">
-                  <div className="row nopadding">
+                  <div className="row ">
                     {products.top_rated?.map((product, key) => (
                       <div className="col-sm-4" key={product.id}>
                         <div className="product-shortcode style-1">

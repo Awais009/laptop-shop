@@ -21,7 +21,7 @@ const Services = () => {
             </div>
         </div>
 
-        <div className="row nopadding">
+        <div className="row ">
             <div className="col-md-6">
                 <div className="block-entry" style={{ backgroundImage: 'url(assets/img/background-23.jpg)' }}>
                     <div className="container-fluid">
