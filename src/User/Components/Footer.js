@@ -1,5 +1,6 @@
 // import React from "react";
 import React, { useContext,  useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import { DataContext } from '../Context';
 import Register from './register';
 import Login from './login';
@@ -38,13 +39,13 @@ const Footer = () => {
                                 <div className="footer-column-links">
                                     <div className="row">
                                         <div className="col-xs-6">
-                                            <a href="#">home</a>
-                                            <a href="#">about us</a>
+                                            <Link to="/">Home</Link>
+                                            <Link to="/about-us">About Us</Link>
                                             <a href="#">products</a>
-                                            <a href="#">services</a>
-                                            <a href="#">blog</a>
+                                            <Link to="/services">Services</Link>
+                                            {/* <a href="#">blog</a> */}
                                             <a href="#">gallery</a>
-                                            <a href="#">contact</a>
+                                            <Link to="/contact-us">contact</Link>
                                         </div>
                                         <div className="col-xs-6">
                                             <a href="#">privacy policy</a>
@@ -88,11 +89,12 @@ const Footer = () => {
                                 <h6 className="h6 light">Contact Us</h6>
                                 <div className="empty-space col-xs-b20"></div>
                                 <div className="follow">
-                                    <a className="entry" href="#"><i className="fa fa-facebook"></i></a>
-                                    <a className="entry" href="#"><i className="fa fa-twitter"></i></a>
-                                    <a className="entry" href="#"><i className="fa fa-linkedin"></i></a>
-                                    <a className="entry" href="#"><i className="fa fa-google-plus"></i></a>
-                                    <a className="entry" href="#"><i className="fa fa-pinterest-p"></i></a>
+                                    <a className="entry" href="https://www.facebook.com/profile.php?id=61555572504369"><i className="fa fa-facebook"></i></a>
+                                    {/* <a className="entry" href="#"><i className="fa fa-twitter"></i></a> */}
+                                    <a className="entry" href="https://www.instagram.com/bjlaptophub/"><i className="fa fa-instagram"></i></a>
+                                    <a className="entry" href="https://www.linkedin.com/company/104579960/admin/dashboard/"><i className="fa fa-linkedin"></i></a>
+                                    {/* <a className="entry" href="#"><i className="fa fa-google-plus"></i></a>
+                                    <a className="entry" href="#"><i className="fa fa-pinterest-p"></i></a> */}
                                 </div>
                                 <div className="empty-space col-xs-b20"></div>
                                 <div className="footer-contact"><i className="fa fa-mobile" aria-hidden="true"></i> contact us: <a href="tel:+971 50 744 9905 ">+971 50 744 9905 </a></div>
@@ -104,8 +106,8 @@ const Footer = () => {
                     </div>
                     <div className="footer-bottom">
                         <div className="row">
-                            <div className="col-lg-12 col-xs-text-center col-xs-b20 col-lg-b0">
-                                <div className="copyright">&copy; 2015 All rights reserved. Development by <a href="https://itpowersystems.com/" target="_blank">IT Power Systems</a></div>
+                            <div className="col-lg-12 col-xs-text-center col-lg-text-left col-xs-b20 col-lg-b0">
+                                <div className="copyright">&copy; 2025 All rights reserved. Development by <a href="https://itpowersystems.com/" target="_blank">IT Power Systems</a></div>
                                 {/* <div className="follow">
                                 <a className="entry" href="#"><i className="fa fa-facebook"></i></a>
                                 <a className="entry" href="#"><i className="fa fa-twitter"></i></a>
@@ -114,7 +116,16 @@ const Footer = () => {
                                 <a className="entry" href="#"><i className="fa fa-pinterest-p"></i></a>
                             </div> */}
                             </div>
-                           
+                            {/* <div className="col-lg-4 col-xs-text-center col-lg-text-right">
+                                <div className="footer-payment-icons">
+                                    <a className="entry"><img src="assets/img/thumbnail-4.jpg" alt="" /></a>
+                                    <a className="entry"><img src="assets/img/thumbnail-5.jpg" alt="" /></a>
+                                    <a className="entry"><img src="assets/img/thumbnail-6.jpg" alt="" /></a>
+                                    <a className="entry"><img src="assets/img/thumbnail-7.jpg" alt="" /></a>
+                                    <a className="entry"><img src="assets/img/thumbnail-8.jpg" alt="" /></a>
+                                    <a className="entry"><img src="assets/img/thumbnail-9.jpg" alt="" /></a>
+                                </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

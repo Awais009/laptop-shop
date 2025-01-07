@@ -154,12 +154,12 @@ const Header = () => {
 
                                 {context?.token ?
                                     <div className="entry">
-                                        <a href='javascript:;' onClick={() => logout()}><b>logout</b></a>
+                                        <a href='javascript:;' onClick={() => logout()}><b>LOGOUT</b></a>
                                     </div>
                                     :
 
                                     <div className="entry">
-                                        <a className="open-popup" data-rel="1"><b>login</b></a>&nbsp; or &nbsp;<a className="open-popup" data-rel="2"><b>register</b></a>
+                                        <a className="open-popup" data-rel="1"><b>LOGIN</b></a>&nbsp; or &nbsp;<a className="open-popup" data-rel="2"><b>REGISTER</b></a>
                                     </div>
                                 }
 
